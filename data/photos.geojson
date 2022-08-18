@@ -1,0 +1,174 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "TV 11E - CL 11S"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0776407,
+            4.5706693
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "Parque Nacional"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.07035,
+            4.6245251
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "KR 82 - CL 25G"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.1209192,
+            4.672764
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "KR 19 - CL 125"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0512219,
+            4.7045288
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "KR 19 - CL 122"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.051653,
+            4.7017814
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "KR 11 - CL 106"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0429887,
+            4.6877697
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "KR 9 - CL 165"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0339177,
+            4.7429057
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "CL 100 - KR 48"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0648902,
+            4.6878471
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "CL 82 - KR 12"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0563262,
+            4.6664187
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "AV KR 11 - CL 90"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.086765,
+            4.5914672
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "AV KR 7 - AV CL 116"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0339641,
+            4.6936942
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "AV CIRCUNVALAR - CL 8S"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0639633,
+            4.6014531
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "folder": "AV CIRCUNVALAR - CL 4E"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.0706973,
+            4.5933817
+          ]
+        }
+      }
+    ]
+  }
