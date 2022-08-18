@@ -1,0 +1,724 @@
+
+
+/* Language setup */
+
+var lang = 'en';
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+
+if (params.lang === 'en' || params.lang === null) {
+  lang = 'en';
+  document.getElementById('lang-change').href = '?lang=es';
+  document.getElementById('lang-flag').src = './resources/colombia.png';
+} else {
+  lang = 'es';
+  document.getElementById('lang-change').href = '?lang=en';
+  document.getElementById('lang-flag').src = './resources/usa.png';
+}
+
+
+
+var initLoad = true;
+
+var layerTypes = {
+  'fill': ['fill-opacity'],
+  'line': ['line-opacity'],
+  'circle': ['circle-opacity', 'circle-stroke-opacity'],
+  'symbol': ['icon-opacity', 'text-opacity'],
+  'raster': ['raster-opacity'],
+  'fill-extrusion': ['fill-extrusion-opacity'],
+  'heatmap': ['heatmap-opacity']
+}
+
+var alignments = {
+  'left': 'lefty',
+  'center': 'centered',
+  'right': 'righty',
+  'full': 'fully'
+}
+
+function getLayerPaintType(layer) {
+  var layerType = map.getLayer(layer).type;
+  return layerTypes[layerType];
+}
+
+function setLayerOpacity(layer) {
+  var paintProps = getLayerPaintType(layer.layer);
+  paintProps.forEach(function (prop) {
+    var options = {};
+    if (layer.duration) {
+      var transitionProp = prop + "-transition";
+      options = { "duration": layer.duration };
+      map.setPaintProperty(layer.layer, transitionProp, options);
+    }
+    map.setPaintProperty(layer.layer, prop, layer.opacity, options);
+  });
+}
+
+var story = document.getElementById('story');
+
+var features = document.createElement('div');
+
+features.setAttribute('id', 'features');
+
+var header = document.createElement('div');
+
+if (config.title) {
+  var titleText = document.createElement('h1');
+  titleText.innerText = config.title[lang];
+  header.appendChild(titleText);
+}
+
+if (config.subtitle) {
+  var subtitleText = document.createElement('h2');
+  subtitleText.innerText = config.subtitle[lang];
+  header.appendChild(subtitleText);
+}
+
+if (config.byline) {
+  var bylineText = document.createElement('p');
+  bylineText.innerText = config.byline;
+  header.appendChild(bylineText);
+}
+
+if (config.image) {
+  var img = document.createElement('img');
+  img.src = config.image;
+  header.appendChild(img);
+}
+
+if (header.innerText.length > 0) {
+  header.classList.add(config.theme);
+  header.setAttribute('id', 'header');
+  story.appendChild(header);
+}
+
+config.chapters.forEach((record, idx) => {
+  var container = document.createElement('div');
+  var chapter = document.createElement('div');
+
+  if (record.title) {
+    var title = document.createElement('h3');
+    title.innerText = record.title;
+    chapter.appendChild(title);
+  }
+
+  if (record.image) {
+    var image = new Image();
+    image.src = record.image.src;
+
+    if (record.image.styles) {
+      Object.entries(record.image.styles).forEach((style) => {
+        const [key, value] = style;
+        image.style[key] = value;
+      });
+    }
+
+    chapter.appendChild(image);
+  }
+
+  if (record.description) {
+    var story = document.createElement('p');
+    story.innerHTML = record.description;
+    chapter.appendChild(story);
+  }
+
+  container.setAttribute('id', record.id);
+  container.classList.add('step');
+
+  if (idx === 0) {
+    container.classList.add('active');
+  }
+
+  chapter.classList.add(config.theme);
+  container.appendChild(chapter);
+  container.classList.add(alignments[record.alignment] || 'centered');
+
+  if (record.hidden) {
+    container.classList.add('hidden');
+  }
+
+  if (record.styles) {
+    Object.entries(record.styles).forEach((style) => {
+      const [key, value] = style;
+      chapter.style[key] = value;
+    });
+  }
+
+  features.appendChild(container);
+});
+
+story.appendChild(features);
+
+var footer = document.createElement('div');
+
+if (config.footer) {
+  var footerText = document.createElement('p');
+  footerText.innerHTML = config.footer;
+  footer.appendChild(footerText);
+}
+
+if (footer.innerText.length > 0) {
+  footer.classList.add(config.theme);
+  footer.setAttribute('id', 'footer');
+  story.appendChild(footer);
+}
+
+mapboxgl.accessToken = config.accessToken;
+
+/*const transformRequest = (url) => {
+  const hasQuery = url.indexOf("?") !== -1;
+  const suffix = hasQuery ? "&pluginName=scrollytellingV2" : "?pluginName=scrollytellingV2";
+  return {
+    url: url + suffix
+  }
+}*/
+
+var map = new mapboxgl.Map({
+  container: 'map',
+  style: config.style,
+  center: config.chapters[0].location.center,
+  zoom: config.chapters[0].location.zoom,
+  bearing: config.chapters[0].location.bearing,
+  pitch: config.chapters[0].location.pitch,
+  interactive: false,
+  //transformRequest: transformRequest,
+  projection: config.projection
+});
+
+// Create a inset map if enabled in config.js
+if (config.inset) {
+  var insetMap = new mapboxgl.Map({
+    container: 'mapInset', // container id
+    style: 'mapbox://styles/mapbox/dark-v10', //hosted style id
+    center: config.chapters[0].location.center,
+    // Hardcode above center value if you want insetMap to be static.
+    zoom: 3, // starting zoom
+    hash: false,
+    interactive: false,
+    attributionControl: false,
+    //Future: Once official mapbox-gl-js has globe view enabled,
+    //insetmap can be a globe with the following parameter.
+    //projection: 'globe'
+  });
+}
+
+if (config.showMarkers) {
+  var marker = new mapboxgl.Marker({ color: config.markerColor });
+  marker.setLngLat(config.chapters[0].location.center).addTo(map);
+}
+
+// instantiate the scrollama
+var scroller = scrollama();
+
+
+map.on("load", function () {
+
+  if (config.use3dTerrain) {
+    map.addSource('mapbox-dem', {
+      'type': 'raster-dem',
+      'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+      'tileSize': 512,
+      'maxzoom': 14
+    });
+    // add the DEM source as a terrain layer with exaggerated height
+    map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+    // add a sky layer that will show when the map is highly pitched
+    map.addLayer({
+      'id': 'sky',
+      'type': 'sky',
+      'paint': {
+        'sky-type': 'atmosphere',
+        'sky-atmosphere-sun': [0.0, 0.0],
+        'sky-atmosphere-sun-intensity': 15
+      }
+    });
+  };
+
+  // 3D Buildings
+  map.addLayer({
+    'id': '3d-buildings',
+    'source': 'composite',
+    'source-layer': 'building',
+    'filter': ['==', 'extrude', 'true'],
+    'type': 'fill-extrusion',
+    'minzoom': 15,
+    'paint': {
+      'fill-extrusion-color': '#aaa',
+      'fill-extrusion-height': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        15,
+        0,
+        15.05,
+        ['get', 'height']
+      ],
+      'fill-extrusion-base': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        15,
+        0,
+        15.05,
+        ['get', 'min_height']
+      ],
+      'fill-extrusion-opacity': 0.6
+    }
+  });
+
+  // Sources used in map navigation
+
+  map.addSource('localidades-src', {
+    'type': 'geojson',
+    'data': './data/localidades.geojson'
+  });
+
+  map.addSource('troncales-src', {
+    'type': 'geojson',
+    'data': './data/troncales.geojson'
+  });
+
+  map.addSource('photos-src', {
+    'type': 'geojson',
+    'data': './data/photos.geojson'
+  });
+
+  // As the map moves, grab and update bounds in inset map.
+  if (config.inset) {
+    map.on('move', getInsetBounds);
+  }
+
+  // setup the instance, pass callback functions
+  scroller
+    .setup({
+      step: '.step',
+      offset: 0.5,
+      progress: true
+    })
+    .onStepEnter(async response => {
+      var chapter = config.chapters.find(chap => chap.id === response.element.id);
+      response.element.classList.add('active');
+      map[chapter.mapAnimation || 'flyTo'](chapter.location);
+      // Incase you do not want to have a dynamic inset map,
+      // rather want to keep it a static view but still change the
+      // bbox as main map move: comment out the below if section.
+      if (config.inset) {
+        if (chapter.location.zoom < 5) {
+          insetMap.flyTo({ center: chapter.location.center, zoom: 0 });
+        } else {
+          insetMap.flyTo({ center: chapter.location.center, zoom: 3 });
+        }
+      }
+
+      if (config.showMarkers) {
+        marker.setLngLat(chapter.location.center);
+      }
+
+      if (chapter.onChapterEnter.length > 0) {
+        chapter.onChapterEnter.forEach(setLayerOpacity);
+      }
+
+      if (chapter.callback) {
+        window[chapter.callback]();
+      }
+
+      if (chapter.rotateAnimation) {
+        map.once('moveend', () => {
+
+          const rotateNumber = map.getBearing();
+          map.rotateTo(rotateNumber + 180, {
+            duration: 120000, easing: (t) => t
+
+          });
+        });
+      }
+    })
+    .onStepExit(response => {
+      var chapter = config.chapters.find(chap => chap.id === response.element.id);
+      response.element.classList.remove('active');
+      if (chapter.onChapterExit.length > 0) {
+        chapter.onChapterExit.forEach(setLayerOpacity);
+      }
+    });
+});
+
+//Helper functions for insetmap
+function getInsetBounds() {
+  let bounds = map.getBounds();
+
+  let boundsJson = {
+    "type": "FeatureCollection",
+    "features": [{
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              bounds._sw.lng,
+              bounds._sw.lat
+            ],
+            [
+              bounds._ne.lng,
+              bounds._sw.lat
+            ],
+            [
+              bounds._ne.lng,
+              bounds._ne.lat
+            ],
+            [
+              bounds._sw.lng,
+              bounds._ne.lat
+            ],
+            [
+              bounds._sw.lng,
+              bounds._sw.lat
+            ]
+          ]
+        ]
+      }
+    }]
+  }
+
+  if (initLoad) {
+    addInsetLayer(boundsJson);
+    initLoad = false;
+  } else {
+    updateInsetLayer(boundsJson);
+  }
+
+}
+
+function addInsetLayer(bounds) {
+  insetMap.addSource('boundsSource', {
+    'type': 'geojson',
+    'data': bounds
+  });
+
+  insetMap.addLayer({
+    'id': 'boundsLayer',
+    'type': 'fill',
+    'source': 'boundsSource', // reference the data source
+    'layout': {},
+    'paint': {
+      'fill-color': '#fff', // blue color fill
+      'fill-opacity': 0.2
+    }
+  });
+  // // Add a black outline around the polygon.
+  insetMap.addLayer({
+    'id': 'outlineLayer',
+    'type': 'line',
+    'source': 'boundsSource',
+    'layout': {},
+    'paint': {
+      'line-color': '#000',
+      'line-width': 1
+    }
+  });
+}
+
+function updateInsetLayer(bounds) {
+  insetMap.getSource('boundsSource').setData(bounds);
+}
+
+// setup resize event
+window.addEventListener('resize', scroller.resize);
+
+/*
+ * Callbacks
+ */
+
+function show3DBuildings() {
+  const layers = map.getStyle().layers;
+  for (const layer of layers) {
+    if (layer.type === 'symbol' && layer.layout['text-field']) {
+      setLayerOpacity({
+        layer: layer.id,
+        opacity: 0
+      });
+    }
+  }
+}
+
+function startPathAnimation() {
+  console.log('Starting path animation...');
+
+  const layers = map.getStyle().layers;
+  for (const layer of layers) {
+    if (layer.type === 'symbol' && layer.layout['text-field']) {
+      setLayerOpacity({
+        layer: layer.id,
+        opacity: 1
+      });
+    }
+  }
+
+  map.flyTo({
+    center: [
+      -74.06991273164749,
+      4.610926316471365
+    ],
+    zoom: 22,
+    pitch: 80,
+    bearing: 15
+  });
+
+  setTimeout(() => {
+    map.flyTo({
+      center: [
+        -74.06861186027527,
+        4.618282491272579
+      ],
+      curve: 0.4,
+      speed: 0.04
+    });
+  }, 1500);
+}
+
+const navigation = new mapboxgl.NavigationControl({
+  showCompass: false,
+  showZoom: true,
+  visualizePitch: false
+});
+
+function enableMapInteractions() {
+  console.log("Making the map interactive");
+
+  const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
+  for (const handler of handlers) {
+    map[handler].enable();
+  }
+
+  // TODO: 
+
+  setLayerOpacity({
+    layer: '3d-buildings',
+    opacity: 0
+  });
+
+  // Enable navigation controls
+  if (!map.hasControl(navigation)) {
+    map.addControl(navigation, 'bottom-right');
+  }
+
+  // Turn on utility layers
+
+  const toggleableLayers = [
+    {
+      'id': 'localidades-lyr',
+      'label': 'Localidades',
+      'visibility': 'visible'
+    },
+    {
+      'id': 'troncales-lyr',
+      'label': 'SITP Troncal',
+      'visibility': 'visible'
+    },
+    {
+      'id': 'walkability-base-lyr',
+      'label': 'Walkability (base)',
+      'visibility': 'visible'
+    },
+    {
+      'id': 'walkability-eb-lyr',
+      'label': 'Walkability (estrato bajo)',
+      'visibility': 'none'
+    },
+    {
+      'id': 'walkability-ea-lyr',
+      'label': 'Walkability (estrato alto)',
+      'visibility': 'none'
+    },
+    {
+      'id': 'walkability-edj-lyr',
+      'label': 'Walkability (jovenes)',
+      'visibility': 'none'
+    },
+    {
+      'id': 'walkability-edv-lyr',
+      'label': 'Walkability (adulto mayor)',
+      'visibility': 'none'
+    },
+    {
+      'id': 'photos-lyr',
+      'label': 'Photos',
+      'visibility': 'visible'
+    }
+  ];
+
+  const layers = map.getStyle().layers;
+
+  // Find the index of the first symbol layer in the map style.
+  let firstSymbolId;
+  for (const layer of layers) {
+    if (layer.type === 'symbol') {
+      firstSymbolId = layer.id;
+      break;
+    }
+  }
+
+
+
+  map.addLayer(
+    {
+      'id': 'localidades-lyr',
+      'type': 'line',
+      'source': 'localidades-src',
+      'layout': {
+        'visibility': toggleableLayers.find(l => l.id === 'localidades-lyr').visibility
+      },
+      'paint': {
+        'line-color': '#8da0cb',
+        'line-opacity': 0.8,
+        'line-width': 3
+      }
+    },
+    firstSymbolId
+  );
+
+  map.addLayer(
+    {
+      'id': 'troncales-lyr',
+      'type': 'line',
+      'source': 'troncales-src',
+      'layout': {
+        'visibility': toggleableLayers.find(l => l.id === 'troncales-lyr').visibility
+      },
+      'paint': {
+        'line-color': '#a6d854',
+        'line-opacity': 0.8,
+        'line-width': 3
+      }
+    },
+    firstSymbolId
+  );
+
+  map.addLayer({
+    'id': 'photos-lyr',
+    'type': 'circle',
+    'source': 'photos-src',
+    'paint': {
+      'circle-radius': 10,
+      'circle-color': '#B42222'
+    }
+  });
+
+  // Set up the corresponding toggle button for each layer.
+  for (const layer of toggleableLayers) {
+    // Skip layers that already have a button set up.
+    if (document.getElementById(layer.id)) {
+      continue;
+    }
+
+    // Create a link.
+    const link = document.createElement('a');
+    link.id = layer.id;
+    link.href = '#';
+    link.textContent = layer.label;
+    if (layer.visibility === 'visible') {
+      link.className = 'active';
+    } else {
+      link.className = '';
+    }
+
+    // Show or hide layer when the toggle is clicked.
+    link.onclick = function (e) {
+      const clickedLayer = this.id;
+      e.preventDefault();
+      e.stopPropagation();
+
+      const visibility = map.getLayoutProperty(
+        clickedLayer,
+        'visibility'
+      );
+
+      // Toggle layer visibility by changing the layout object's visibility property.
+      if (visibility === 'visible') {
+        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        this.className = '';
+      } else {
+        this.className = 'active';
+        map.setLayoutProperty(
+          clickedLayer,
+          'visibility',
+          'visible'
+        );
+
+        setLayerOpacity({
+          layer: clickedLayer,
+          opacity: 1
+        });
+      }
+    };
+
+    const layers = document.getElementById('menu');
+    layers.appendChild(link);
+  }
+
+}
+
+function disableMapInteractions() {
+  console.log("Making the map NOT interactive again");
+
+  const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
+  for (const handler of handlers) {
+    map[handler].disable();
+  }
+
+  if (map.hasControl(navigation)) {
+    map.removeControl(navigation);
+  }
+
+  // Deleting layers menu
+  let menu = document.getElementById('menu');
+  if (menu.hasChildNodes()) {
+    menu.innerHTML = '';
+
+    // Removing static layers
+    map.removeLayer('localidades-lyr');
+    map.removeLayer('troncales-lyr');
+    map.removeLayer('photos-lyr');
+
+    map.setLayoutProperty(
+      'walkability-base-lyr',
+      'visibility',
+      'visible'
+    );
+  }
+}
+
+// TODO: Put this code in the right place
+
+// When a click event occurs on a feature in the states layer,
+// open a popup at the location of the click, with description
+// HTML from the click event's properties.
+map.on('click', 'walkability-base-lyr', (e) => {
+  console.log(e.features[0]);
+
+  new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(popupFormat(e.features[0].properties, 'Walk_Base'))
+    .addTo(map);
+});
+
+// Change the cursor to a pointer when
+// the mouse is over the states layer.
+map.on('mouseenter', 'walkability-base-lyr', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+// Change the cursor back to a pointer
+// when it leaves the states layer.
+map.on('mouseleave', 'walkability-base-lyr', () => {
+  map.getCanvas().style.cursor = '';
+});
+
+function popupFormat(prop, walk) {
+  return 'Localidad: ' + prop.LocNombre + '<br / >Walkability: ' + prop[walk];
+}
