@@ -83,10 +83,12 @@ if (config.byline) {
   header.appendChild(bylineText);
 }
 
-if (config.image) {
-  var img = document.createElement('img');
-  img.src = config.image;
-  header.appendChild(img);
+if (config.images) {
+  for (const image of config.images) {
+    var img = document.createElement('img');
+    img.src = image;
+    header.appendChild(img);
+  }
 }
 
 if (header.innerText.length > 0) {
@@ -101,7 +103,7 @@ config.chapters.forEach((record, idx) => {
 
   if (record.title) {
     var title = document.createElement('h3');
-    title.innerText = record.title;
+    title.innerText = record.title[lang];
     chapter.appendChild(title);
   }
 
@@ -121,7 +123,7 @@ config.chapters.forEach((record, idx) => {
 
   if (record.description) {
     var story = document.createElement('p');
-    story.innerHTML = record.description;
+    story.innerHTML = record.description[lang];
     chapter.appendChild(story);
   }
 
@@ -490,6 +492,8 @@ const navigation = new mapboxgl.NavigationControl({
 function enableMapInteractions() {
   console.log("Making the map interactive");
 
+  document.getElementById('ch-5').style.visibility = 'hidden';
+
   const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].enable();
@@ -512,42 +516,66 @@ function enableMapInteractions() {
   const toggleableLayers = [
     {
       'id': 'localidades-lyr',
-      'label': 'Localidades',
+      'label': {
+        en: 'Localidades**',
+        es: 'Localidades'
+      },
       'visibility': 'visible'
     },
     {
       'id': 'troncales-lyr',
-      'label': 'SITP Troncal',
+      'label': {
+        en: 'SITP trunks',
+        es: 'Troncales SITP'
+      } ,
       'visibility': 'visible'
     },
     {
       'id': 'walkability-base-lyr',
-      'label': 'Walkability (base)',
+      'label': {
+        en: 'Walkability (base)',
+        es: 'Transitabilidad (general)'
+      },
       'visibility': 'visible'
     },
     {
       'id': 'walkability-eb-lyr',
-      'label': 'Walkability (estrato bajo)',
+      'label': {
+        en: 'Walkability (low-income)',
+        es: 'Transitabilidad (estrato bajo)'
+      },
       'visibility': 'none'
     },
     {
       'id': 'walkability-ea-lyr',
-      'label': 'Walkability (estrato alto)',
+      'label': {
+        en: 'Walkability (high-income)',
+        es: 'Transitabilidad (estrato alto)'
+      },
       'visibility': 'none'
     },
     {
       'id': 'walkability-edj-lyr',
-      'label': 'Walkability (jovenes)',
+      'label': {
+        en: 'Walkability (young people)',
+        es: 'Transitabilidad (jóvenes)'
+      },
       'visibility': 'none'
     },
     {
       'id': 'walkability-edv-lyr',
-      'label': 'Walkability (adulto mayor)',
+      'label': {
+        en: 'Walkability (elder people)',
+        es: 'Transitabilidad (ancianos)'
+      },
       'visibility': 'none'
     },
     {
       'id': 'photos-lyr',
-      'label': 'Photos',
+      'label': {
+        en: 'Photos',
+        es: 'Fotos'
+      },
       'visibility': 'visible'
     }
   ];
@@ -563,7 +591,7 @@ function enableMapInteractions() {
     }
   }
 
-
+  // Adding layers manual for interacting with the map
 
   map.addLayer(
     {
@@ -575,8 +603,8 @@ function enableMapInteractions() {
       },
       'paint': {
         'line-color': '#8da0cb',
-        'line-opacity': 0.8,
-        'line-width': 3
+        'line-opacity': 0.2,
+        'line-width': 8
       }
     },
     firstSymbolId
@@ -591,22 +619,43 @@ function enableMapInteractions() {
         'visibility': toggleableLayers.find(l => l.id === 'troncales-lyr').visibility
       },
       'paint': {
-        'line-color': '#a6d854',
-        'line-opacity': 0.8,
-        'line-width': 3
+        'line-color': '#D22830',
+        'line-opacity': 0.2,
+        'line-width': 8
       }
     },
     firstSymbolId
   );
-
-  map.addLayer({
-    'id': 'photos-lyr',
-    'type': 'circle',
-    'source': 'photos-src',
-    'paint': {
-      'circle-radius': 10,
-      'circle-color': '#B42222'
+  
+  for (const lyr of ['walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr']) {
+    if (map.getLayer(lyr)) {
+      map.setLayoutProperty(
+        lyr,
+        'visibility',
+        'none'
+      );
+  
+      setLayerOpacity({
+        layer: lyr,
+        opacity: 1
+      });
     }
+  }  
+
+  map.loadImage(
+    './resources/camera.png',
+    (error, image) => {
+    if (error) throw error;
+    map.addImage('camera-marker', image);
+
+    map.addLayer({
+      'id': 'photos-lyr',
+      'type': 'symbol',
+      'source': 'photos-src',
+      'layout': {
+        'icon-image': 'camera-marker',
+      }
+    });
   });
 
   // Set up the corresponding toggle button for each layer.
@@ -620,7 +669,7 @@ function enableMapInteractions() {
     const link = document.createElement('a');
     link.id = layer.id;
     link.href = '#';
-    link.textContent = layer.label;
+    link.textContent = layer.label[lang];
     if (layer.visibility === 'visible') {
       link.className = 'active';
     } else {
@@ -649,11 +698,6 @@ function enableMapInteractions() {
           'visibility',
           'visible'
         );
-
-        setLayerOpacity({
-          layer: clickedLayer,
-          opacity: 1
-        });
       }
     };
 
@@ -661,10 +705,57 @@ function enableMapInteractions() {
     layers.appendChild(link);
   }
 
+  for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr', 'photos-lyr']) {
+    // When a click event occurs on a feature in the states layer,
+    // open a popup at the location of the click, with description
+    // HTML from the click event's properties.
+    map.on('click', lyr, (e) => {
+      console.log(e.features[0]);
+  
+      new mapboxgl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(popupFormat(e.features[0]))
+        .addTo(map);
+    });
+  
+    // Change the cursor to a pointer when
+    // the mouse is over the states layer.
+    map.on('mouseenter', lyr, () => {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+  
+    // Change the cursor back to a pointer
+    // when it leaves the states layer.
+    map.on('mouseleave', lyr, () => {
+      map.getCanvas().style.cursor = '';
+    });
+  }
+  
+  function popupFormat(e) {
+    console.log(e);
+    if (e.layer.id.startsWith('walkability')) {
+      let title = {
+        en: 'Localidad',
+        es: 'Localidad'
+      };
+
+      let subtitle = {
+        en: 'Walkability index',
+        es: 'índice de transitabilidad'
+      };
+
+      return `<h3>${title[lang]}: ${e.properties.LocNombre}</h3><h4>${subtitle[lang]}: ${e.properties.Walk_Base.toFixed(3)}</h4>`
+    } else {
+      return `<h3>Dirección: ${e.properties.folder}</h3><h4></h4>`;
+    }
+  }
+
 }
 
 function disableMapInteractions() {
   console.log("Making the map NOT interactive again");
+
+  document.getElementById('ch-5').style.visibility = 'visible';
 
   const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
@@ -691,34 +782,11 @@ function disableMapInteractions() {
       'visible'
     );
   }
-}
 
-// TODO: Put this code in the right place
-
-// When a click event occurs on a feature in the states layer,
-// open a popup at the location of the click, with description
-// HTML from the click event's properties.
-map.on('click', 'walkability-base-lyr', (e) => {
-  console.log(e.features[0]);
-
-  new mapboxgl.Popup()
-    .setLngLat(e.lngLat)
-    .setHTML(popupFormat(e.features[0].properties, 'Walk_Base'))
-    .addTo(map);
-});
-
-// Change the cursor to a pointer when
-// the mouse is over the states layer.
-map.on('mouseenter', 'walkability-base-lyr', () => {
-  map.getCanvas().style.cursor = 'pointer';
-});
-
-// Change the cursor back to a pointer
-// when it leaves the states layer.
-map.on('mouseleave', 'walkability-base-lyr', () => {
-  map.getCanvas().style.cursor = '';
-});
-
-function popupFormat(prop, walk) {
-  return 'Localidad: ' + prop.LocNombre + '<br / >Walkability: ' + prop[walk];
+  // Disabling listeners for walkabiliy layers
+  for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr']) {
+    map.off('click', lyr);
+    map.off('mouseenter', lyr);
+    map.off('mouseleave', lyr);
+  }
 }
