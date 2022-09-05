@@ -68,8 +68,16 @@ a:visited {
 }
 
 #header img {
-  height: 60px;
+  height: 50px;
   padding-bottom: 2vh;
+}
+
+#header img.uniandes-logo {
+  padding-bottom: 4vh;
+}
+  
+#header img.gruposur-logo {
+  height: 90px;
 }
 
 #footer {
@@ -106,6 +114,7 @@ a:visited {
 .righty {
   width: 33vw;
   margin-left: 62vw;
+  text-align: right;
 }
 
 .fully {
@@ -280,7 +289,7 @@ a:visited {
   top: 10px;
   right: 10px;
   border-radius: 3px;
-  width: 200px;
+  width: 220px;
   /*border: 1px solid rgba(0, 0, 0, 0.4);*/
   /*font-family: 'Open Sans', sans-serif;*/
 }
@@ -359,3 +368,14 @@ a:visited {
 .mapboxgl-popup-anchor-top > .mapboxgl-popup-tip {
   border-bottom-color: #3887be;
 }
+
+/* Color scale */
+
+#scale {
+  position: fixed;
+  z-index: 1;
+  top: 10px;
+  left: 10px;
+  visibility: hidden;
+}
+  

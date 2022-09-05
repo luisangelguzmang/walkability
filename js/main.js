@@ -85,8 +85,9 @@ if (config.byline) {
 
 if (config.images) {
   for (const image of config.images) {
-    var img = document.createElement('img');
-    img.src = image;
+    let img = document.createElement('img');
+    img.src = image.src;
+    img.className = image.className;
     header.appendChild(img);
   }
 }
@@ -334,7 +335,6 @@ map.on("load", function () {
           const rotateNumber = map.getBearing();
           map.rotateTo(rotateNumber + 180, {
             duration: 120000, easing: (t) => t
-
           });
         });
       }
@@ -534,7 +534,7 @@ function enableMapInteractions() {
       'id': 'walkability-base-lyr',
       'label': {
         en: 'Walkability (base)',
-        es: 'Transitabilidad (general)'
+        es: 'Caminabilidad (general)'
       },
       'visibility': 'visible'
     },
@@ -542,7 +542,7 @@ function enableMapInteractions() {
       'id': 'walkability-eb-lyr',
       'label': {
         en: 'Walkability (low-income)',
-        es: 'Transitabilidad (estrato bajo)'
+        es: 'Caminabilidad (bajos ingresos)'
       },
       'visibility': 'none'
     },
@@ -550,7 +550,7 @@ function enableMapInteractions() {
       'id': 'walkability-ea-lyr',
       'label': {
         en: 'Walkability (high-income)',
-        es: 'Transitabilidad (estrato alto)'
+        es: 'Caminabilidad (altos ingresos)'
       },
       'visibility': 'none'
     },
@@ -558,7 +558,7 @@ function enableMapInteractions() {
       'id': 'walkability-edj-lyr',
       'label': {
         en: 'Walkability (young people)',
-        es: 'Transitabilidad (jóvenes)'
+        es: 'Caminabilidad (jóvenes)'
       },
       'visibility': 'none'
     },
@@ -566,7 +566,7 @@ function enableMapInteractions() {
       'id': 'walkability-edv-lyr',
       'label': {
         en: 'Walkability (elder people)',
-        es: 'Transitabilidad (ancianos)'
+        es: 'Caminabilidad (adultos mayores)'
       },
       'visibility': 'none'
     },
@@ -750,6 +750,9 @@ function enableMapInteractions() {
     }
   }
 
+  // Show color scale
+  document.getElementById("scale").style.visibility = 'visible';
+
 }
 
 function disableMapInteractions() {
@@ -789,4 +792,7 @@ function disableMapInteractions() {
     map.off('mouseenter', lyr);
     map.off('mouseleave', lyr);
   }
+
+  // Hide color scale
+  document.getElementById("scale").style.visibility = 'hidden';
 }
