@@ -4,7 +4,19 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "TV 11E - CL 11S"
+          "folder": "TV11E-CL11S",
+          "photos": [
+            "IMG_3952.JPG",
+            "IMG_3954.JPG",
+            "IMG_3957.JPG",
+            "IMG_3959.JPG",
+            "IMG_3961.JPG",
+            "IMG_3953.JPG",
+            "IMG_3955.JPG",
+            "IMG_3958.JPG",
+            "IMG_3960.JPG",
+            "IMG_3962.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -17,7 +29,24 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "Parque Nacional"
+          "folder": "ParqueNacional",
+          "photos": [
+            "2636e049-d5ea-4410-9335-838a9a4d7add.jpeg",
+            "2998a6a6-84d9-4bcc-8eea-51614f059571.jpeg",
+            "61e8db89-9900-47e2-91b3-71fb8f568ee5.jpeg",
+            "6ab2ed47-6025-4f36-8a3d-234c6109faa3.jpeg",
+            "82cb0649-56d9-42ca-9656-2b750b2ab1e2.jpeg",
+            "98e68a0f-6f35-400e-b0be-59ecd38e1fe1.jpeg",
+            "9c062969-dfed-40d9-a89d-dcc82fcbf9e1.jpeg",
+            "a2c3fb74-8465-485e-a9af-5a6ff371045c.jpeg",
+            "ad5b29d5-080a-43ee-84c4-0bfdabe85de7.jpeg",
+            "b32c549e-b327-4982-8e1d-43f09bbe2b8b.jpeg",
+            "b447d7c1-bb7a-41ee-ad35-3452f82db7c3.jpeg",
+            "c1ec3aca-b981-49c4-b888-458c4100e599.jpeg",
+            "c9dd35b1-55ef-42ae-8522-aa4d22e6530a.jpeg",
+            "e1ec26d6-5f95-45ae-8be9-fd9017909996.jpeg",
+            "ea05b892-3b9c-48c6-a71d-b45b1e1e362a.jpeg"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -30,7 +59,39 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "KR 82 - CL 25G"
+          "folder": "KR82-CL25G",
+          "photos": [
+            "06f22183-c0b1-492e-a36d-0138002303ee.jpeg",
+            "1a20ccfd-4ce9-472f-9d32-478a6e22a959.jpeg",
+            "1bad709f-a2b3-41b1-87c6-e2d699b7ba4d.jpeg",
+            "1ef1777f-75a1-4b57-b78f-777235807924.jpeg",
+            "2ca1f502-d99f-4e65-9a6e-9f8254fbd073.jpeg",
+            "300bc9a9-47f1-4407-b580-26dada86f302.jpeg",
+            "32a85076-5b36-48c2-93dc-05c02039a87a.jpeg",
+            "36937fb9-9ee0-47c8-aeff-445fbbfa83e9.jpeg",
+            "383e8cfb-daaa-4232-9f38-38189a845f0c.jpeg",
+            "43a904e7-a9ea-4354-bcd0-eaea0f5b00d3.jpeg",
+            "48b69d97-44da-474c-94eb-6adbcaef8413.jpeg",
+            "5030e194-d602-4c4d-b3a7-67915ce9f42e.jpeg",
+            "543ff642-a751-421e-a16f-bb98d8aad4bc.jpeg",
+            "5440a3cf-cb9d-438e-843a-3668e452b475.jpeg",
+            "54415472-288b-43f4-8b1f-7d32dd68ca31.jpeg",
+            "64a1bb23-d412-4c32-b3ee-13bc4c251e19.jpeg",
+            "6df9fd26-e2a9-4da5-932d-282b8316359e.jpeg",
+            "705a41df-84a2-466c-9c48-78d627dd6e07.jpeg",
+            "7c88b75f-65f4-44ad-856a-3961645261c6.jpeg",
+            "8f03d41e-0548-4536-8f8d-0df010c78d39.jpeg",
+            "9a0e9f33-a2c0-4db0-a9c4-ed4edad7d601.jpeg",
+            "9c214e63-3db3-4990-93b2-4591c90c8d97.jpeg",
+            "ad99fc6d-4f43-4c78-be5b-c8c303e824b0.jpeg",
+            "b09f9ead-5bcb-48f1-a83f-5c190433ae72.jpeg",
+            "c3514c7a-7a6f-431b-b106-680aba782129.jpeg",
+            "ca066a0f-a020-437f-b00c-186cb44d2925.jpeg",
+            "dde7493f-cf89-4b44-84ea-2accc6dbfac9.jpeg",
+            "e19435cf-26f0-450d-9628-41de204ac88c.jpeg",
+            "edecc657-1181-4bae-867d-aad661a96fec.jpeg",
+            "fb04d42b-dd10-4107-bf58-fe89cca016d3.jpeg"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -43,7 +104,15 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "KR 19 - CL 125"
+          "folder": "KR19-CL125",
+          "photos": [
+            "IMG_3827.JPG",
+            "IMG_3831.JPG",
+            "IMG_3833.JPG",
+            "IMG_3829.JPG",
+            "IMG_3832.JPG",
+            "IMG_3834.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -56,7 +125,19 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "KR 19 - CL 122"
+          "folder": "KR19-CL122",
+          "photos": [
+            "IMG_3836.JPG",
+            "IMG_3838.JPG",
+            "IMG_3840.JPG",
+            "IMG_3842.JPG",
+            "IMG_3845.JPG",
+            "IMG_3837.JPG",
+            "IMG_3839.JPG",
+            "IMG_3841.JPG",
+            "IMG_3843.JPG",
+            "IMG_3846.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -69,7 +150,27 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "KR 11 - CL 106"
+          "folder": "KR11-CL106",
+          "photos": [
+            "IMG_3866.JPG",
+            "IMG_3870.JPG",
+            "IMG_3875.JPG",
+            "IMG_3879.JPG",
+            "IMG_3883.JPG",
+            "IMG_3867.JPG",
+            "IMG_3871.JPG",
+            "IMG_3876.JPG",
+            "IMG_3880.JPG",
+            "IMG_3884.JPG",
+            "IMG_3868.JPG",
+            "IMG_3872.JPG",
+            "IMG_3877.JPG",
+            "IMG_3881.JPG",
+            "IMG_3869.JPG",
+            "IMG_3874.JPG",
+            "IMG_3878.JPG",
+            "IMG_3882.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -82,7 +183,17 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "KR 9 - CL 165"
+          "folder": "KR9-CL165",
+          "photos": [
+            "IMG_3817.JPG",
+            "IMG_3819.JPG",
+            "IMG_3821.JPG",
+            "IMG_3824.JPG",
+            "IMG_3818.JPG",
+            "IMG_3820.JPG",
+            "IMG_3822.JPG",
+            "IMG_3826.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -95,7 +206,28 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "CL 100 - KR 48"
+          "folder": "CL100-KR48",
+          "photos": [
+            "IMG_3885.JPG",
+            "IMG_3889.JPG",
+            "IMG_3895.JPG",
+            "IMG_3899.JPG",
+            "IMG_3904.JPG",
+            "IMG_3886.JPG",
+            "IMG_3890.JPG",
+            "IMG_3896.JPG",
+            "IMG_3900.JPG",
+            "IMG_3905.JPG",
+            "IMG_3887.JPG",
+            "IMG_3891.JPG",
+            "IMG_3897.JPG",
+            "IMG_3901.JPG",
+            "IMG_3906.JPG",
+            "IMG_3888.JPG",
+            "IMG_3894.JPG",
+            "IMG_3898.JPG",
+            "IMG_3903.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -108,7 +240,17 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "CL 82 - KR 12"
+          "folder": "CL82-KR12",
+          "photos": [
+            "IMG_3919.JPG",
+            "IMG_3921.JPG",
+            "IMG_3924.JPG",
+            "IMG_3926.JPG",
+            "IMG_3920.JPG",
+            "IMG_3923.JPG",
+            "IMG_3925.JPG",
+            "IMG_3927.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -121,7 +263,20 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "AV KR 11 - CL 90"
+          "folder":"AVKR11-CL90",
+          "photos": [
+            "IMG_3907.JPG",
+            "IMG_3910.JPG",
+            "IMG_3914.JPG",
+            "IMG_3917.JPG",
+            "IMG_3908.JPG",
+            "IMG_3911.JPG",
+            "IMG_3915.JPG",
+            "IMG_3918.JPG",
+            "IMG_3909.JPG",
+            "IMG_3912.JPG",
+            "IMG_3916.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -134,7 +289,26 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "AV KR 7 - AV CL 116"
+          "folder": "AVKR7-AVCL116",
+          "photos": [
+            "IMG_3848.JPG",
+            "IMG_3852.JPG",
+            "IMG_3856.JPG",
+            "IMG_3861.JPG",
+            "IMG_3865.JPG",
+            "IMG_3849.JPG",
+            "IMG_3853.JPG",
+            "IMG_3857.JPG",
+            "IMG_3862.JPG",
+            "IMG_3850.JPG",
+            "IMG_3854.JPG",
+            "IMG_3858.JPG",
+            "IMG_3863.JPG",
+            "IMG_3851.JPG",
+            "IMG_3855.JPG",
+            "IMG_3860.JPG",
+            "IMG_3864.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -147,7 +321,13 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "AV CIRCUNVALAR - CL 8S"
+          "folder": "AVCIRCUNVALAR-CL8S",
+          "photos": [
+            "IMG_3941.JPG",
+            "IMG_3942.JPG",
+            "IMG_3944.JPG",
+            "IMG_3945.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",
@@ -160,7 +340,18 @@
       {
         "type": "Feature",
         "properties": {
-          "folder": "AV CIRCUNVALAR - CL 4E"
+          "folder": "AVCIRCUNVALAR-CL4E",
+          "photos": [
+            "IMG_3929.JPG",
+            "IMG_3931.JPG",
+            "IMG_3933.JPG",
+            "IMG_3935.JPG",
+            "IMG_3938.JPG",
+            "IMG_3930.JPG",
+            "IMG_3932.JPG",
+            "IMG_3934.JPG",
+            "IMG_3937.JPG"
+          ]
         },
         "geometry": {
           "type": "Point",

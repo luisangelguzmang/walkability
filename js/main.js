@@ -492,14 +492,14 @@ const navigation = new mapboxgl.NavigationControl({
 function enableMapInteractions() {
   console.log("Making the map interactive");
 
+  document.getElementById('section10').style.visibility = 'hidden';
+
   document.getElementById('ch-5').style.visibility = 'hidden';
 
   const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].enable();
   }
-
-  // TODO: 
 
   setLayerOpacity({
     layer: '3d-buildings',
@@ -710,12 +710,32 @@ function enableMapInteractions() {
     // open a popup at the location of the click, with description
     // HTML from the click event's properties.
     map.on('click', lyr, (e) => {
-      console.log(e.features[0]);
-  
-      new mapboxgl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(popupFormat(e.features[0]))
-        .addTo(map);
+      //console.log(e.features[0]);
+      if (e.features[0].layer.id.startsWith('walkability')) {
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(popupFormat(e.features[0]))
+          .addTo(map);
+      } else {
+        // Build photo slides
+        let container = document.getElementById('photo-slides-container');
+        let photos = JSON.parse(e.features[0].properties.photos);
+        photos.map(photo => {
+          let div = document.createElement('div');
+          div.classList.add('photo-slides');
+          div.classList.add('photo-slides-fade');
+          let img = document.createElement('img');
+          img.src = 'https://storage.googleapis.com/uniandes-walkability-photos/' + e.features[0].properties.folder + '/' + photo;
+          img.classList.add('photo-slides-img');
+          div.appendChild(img);
+          container.appendChild(div);
+        });
+        
+        // Open photo popup
+        slideIndex = 1;
+        showSlides(slideIndex);
+        openPhotoPopup();        
+      }
     });
   
     // Change the cursor to a pointer when
@@ -732,22 +752,25 @@ function enableMapInteractions() {
   }
   
   function popupFormat(e) {
-    console.log(e);
-    if (e.layer.id.startsWith('walkability')) {
-      let title = {
-        en: 'Localidad',
-        es: 'Localidad'
-      };
+    let title = {
+      en: 'Localidad',
+      es: 'Localidad'
+    };
 
-      let subtitle = {
-        en: 'Walkability index',
-        es: 'índice de transitabilidad'
-      };
+    let subtitle = {
+      en: 'Walkability index',
+      es: 'Índice de caminabilidad'
+    };
 
-      return `<h3>${title[lang]}: ${e.properties.LocNombre}</h3><h4>${subtitle[lang]}: ${e.properties.Walk_Base.toFixed(3)}</h4>`
-    } else {
-      return `<h3>Dirección: ${e.properties.folder}</h3><h4></h4>`;
-    }
+    let walk_prop = {
+      'walkability-base-lyr': 'Walk_Base',
+      'walkability-eb-lyr': 'Walk_E_B',
+      'walkability-ea-lyr': 'Walk_E_A',
+      'walkability-edj-lyr': 'Walk_ED_J',
+      'walkability-edv-lyr': 'Walk_ED_V'
+    };
+
+    return `<h3>${title[lang]}: ${e.properties.LocNombre}</h3><h4>${subtitle[lang]}: ${e.properties[walk_prop[e.layer.id]].toFixed(3)}</h4>`
   }
 
   // Show color scale
@@ -757,6 +780,8 @@ function enableMapInteractions() {
 
 function disableMapInteractions() {
   console.log("Making the map NOT interactive again");
+
+  document.getElementById('section10').style.visibility = 'visible';
 
   document.getElementById('ch-5').style.visibility = 'visible';
 
@@ -795,4 +820,38 @@ function disableMapInteractions() {
 
   // Hide color scale
   document.getElementById("scale").style.visibility = 'hidden';
+}
+
+/* Photos popup */ 
+
+function openPhotoPopup() {
+  document.getElementById('photo-popup').style.width = '100%';
+}
+
+function closePhotoPopup() {
+  document.getElementById('photo-popup').style.width = '0%';
+
+  // Removing photos in slider
+  let photos = document.getElementById('photo-slides-container').querySelectorAll('div');
+  photos.forEach(photo => {
+    photo.remove();
+  });
+}
+
+/* Photo slides */
+var slideIndex = 1;
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("photo-slides");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slides[slideIndex-1].style.display = "block";
 }
