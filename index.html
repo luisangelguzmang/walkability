@@ -18,10 +18,29 @@
         <img src="./resources/colombia.png" id="lang-flag">
       </a>
     </section>
+    
     <nav id="menu"></nav>
+    
+    <div id="scale">
+      <img src="./resources/scale.svg">
+    </div>
+    
     <div id="map"></div>
+    
     <div id="mapInset"></div>
+    
     <div id="story"></div>
+
+    <div id="photo-popup" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closePhotoPopup()">&times;</a>
+      <div class="overlay-content">
+        <div id="photo-slides-container">          
+          <a class="photo-slides-prev" onclick="plusSlides(-1)">❮</a>
+          <a class="photo-slides-next" onclick="plusSlides(1)">❯</a>
+        </div>
+      </div>
+    </div>
+
     <section id="section10" class="scroll-down">
       <a href="#">
         <span></span>
