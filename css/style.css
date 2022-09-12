@@ -484,3 +484,17 @@ a:visited {
 @media only screen and (max-width: 300px) {
   .photo-slides-prev, .photo-slides-next, .photo-slides-text {font-size: 11px}
 }
+
+/* Vega */
+
+.vega-embed {
+  padding: 0px !important;
+}
+
+.chart-wrapper {
+  padding: 0px !important;
+}
+
+#ch-5 {
+  width: 80vw !important;
+}

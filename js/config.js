@@ -355,8 +355,8 @@ var config = {
       title: false,
       image: false,
       description: {
-        en: 'How is the quality of the pedestrian network in Bogotá?',
-        es: '¿Cómo es la calidad de la red peatonal en Bootá?'
+        en: '<b>How is the quality of the pedestrian network in Bogotá?</b><br /><i>Click on a legend to highlight by Localidad</i><br /><div id="vis"></div>',
+        es: '<b>¿Cómo es la calidad de la red peatonal en Bootá?</b><br /><i>Haga clic en una leyenda para detallar una Localidad</i><br /><div style="padding: 5px;" id="vis"></div>'
       },
       location: {
         center: [-74.070074, 4.610067],
