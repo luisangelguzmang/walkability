@@ -839,6 +839,7 @@ function closePhotoPopup() {
 }
 
 /* Photo slides */
+
 var slideIndex = 1;
 
 function plusSlides(n) {
@@ -855,3 +856,77 @@ function showSlides(n) {
   }
   slides[slideIndex-1].style.display = "block";
 }
+
+/* Vega Lite visualization */
+
+vegaEmbed('#vis', {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 900,
+  "height": 300,
+  "data": {
+    "url": "https://raw.githubusercontent.com/fabiancpl/walkability/main/data/walkability.csv"
+  },
+  "mark": {
+    "type": "line"
+  },
+  "transform": [
+    {
+      "density": "Walk_Base",
+      "groupby": ["LocNombre"],
+      "extent": [0.2, 0.8]
+    }
+  ],
+  "params": [
+    {
+      "name": "loc",
+      "select": {
+        "type": "point",
+        "fields": [
+          "LocNombre"
+        ]
+      },
+      "bind": "legend"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "value",
+      "type": "quantitative",
+      "title": lang === "en" ? "Walkability index" : "Índice de caminabilidad"
+    },
+    "y": {
+      "field": "density",
+      "type": "quantitative",
+      "title": null
+    },
+    "color": {
+      "field": "LocNombre",
+      "scale": {
+        "scheme": "tableau20"
+      },
+      "legend": {
+        "symbolType": "circle",
+        "symbolSize": 50,
+        "symbolStrokeWidth": 5,
+        "columns": 2
+      },
+      "title": "Localidad"
+    },
+    "opacity": {
+      "condition": {
+        "param": "loc",
+        "empty": false,
+        "value": 1
+      },
+      "value": 0.3
+    },
+    "strokeWidth": {
+      "condition": {
+        "param": "loc",
+        "empty": false,
+        "value": 4
+      },
+      "value": 1
+    }
+  }
+}, { "actions": false });
