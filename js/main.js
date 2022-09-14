@@ -666,6 +666,10 @@ function enableMapInteractions() {
     // Showing layers accoring to configuration
     map.setLayoutProperty(layer.id, 'visibility', layer.visibility);
 
+    if (layer.id === 'photos-lyr') {
+      map.setLayoutProperty('cluster-photos-lyr', 'visibility', layer.visibility);
+    }
+
     // Create a link.
     const link = document.createElement('a');
     link.id = layer.id;
@@ -821,7 +825,13 @@ function disableMapInteractions() {
 
   // Hidden all layers
   for (const layer of toggleableLayers) {
-    map.setLayoutProperty(layer.id, 'visibility', 'none');
+    if (map.getLayer(layer.id)) {
+      map.setLayoutProperty(layer.id, 'visibility', 'none');
+
+      if (layer.id === 'photos-lyr') {
+        map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'none');
+      }
+    }
   }
 
   // Hide color scale
