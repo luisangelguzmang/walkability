@@ -338,7 +338,7 @@ a:visited {
 .mapboxgl-popup-content {
   font: 400 15px/22px sans-serif;
   padding: 0;
-  width: 210px;
+  width: 250px;
 }
 
 .mapboxgl-popup-content h3 {
