@@ -122,7 +122,7 @@ var config = {
           opacity: 0
         },
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 0
         }
       ],
@@ -160,7 +160,7 @@ var config = {
       callback: '',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         },
         {
@@ -199,7 +199,7 @@ var config = {
       callback: '',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         }
       ],
@@ -234,7 +234,7 @@ var config = {
       callback: '',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         }
       ],
@@ -269,7 +269,7 @@ var config = {
       callback: '',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         }
       ],
@@ -304,7 +304,7 @@ var config = {
       callback: '',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         }
       ],
@@ -336,16 +336,16 @@ var config = {
       },
       mapAnimation: 'flyTo',
       rotateAnimation: false,
-      callback: '',
+      callback: 'disableMapInteractions',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         }
       ],
       onChapterExit: []
     },
-    {
+    /*{
       id: 'ch-5',
       alignment: 'center',
       hidden: false,
@@ -369,12 +369,12 @@ var config = {
       callback: 'disableMapInteractions',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
+          layer: 'walkability-lyr',
           opacity: 1
         }
       ],
       onChapterExit: []
-    },
+    },*/
     {
       id: 'ch-6',
       alignment: 'center',
@@ -396,8 +396,8 @@ var config = {
       callback: 'enableMapInteractions',
       onChapterEnter: [
         {
-          layer: 'walkability-base-lyr',
-          opacity: 1
+          layer: 'walkability-lyr',
+          opacity: 0
         }
       ],
       onChapterExit: []

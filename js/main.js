@@ -287,7 +287,15 @@ map.on("load", function () {
 
   map.addSource('photos-src', {
     'type': 'geojson',
-    'data': './data/photos.geojson'
+    'data': './data/photos.geojson',
+    'cluster': true,
+    'clusterMaxZoom': 14,
+    'clusterRadius': 50
+  });
+
+  map.loadImage('./resources/camera.png', (error, image) => {
+    if (error) throw error;
+      map.addImage('camera-marker', image);
   });
 
   // As the map moves, grab and update bounds in inset map.
@@ -489,96 +497,87 @@ const navigation = new mapboxgl.NavigationControl({
   visualizePitch: false
 });
 
+const toggleableLayers = [
+  {
+    'id': 'localidades-lyr',
+    'label': {
+      en: 'Districts',
+      es: 'Localidades'
+    },
+    'visibility': 'visible'
+  },
+  {
+    'id': 'troncales-lyr',
+    'label': {
+      en: 'TM trunk corridors',
+      es: 'Troncales TM'
+    } ,
+    'visibility': 'visible'
+  },
+  {
+    'id': 'walkability-base-lyr',
+    'label': {
+      en: 'Walkability (base)',
+      es: 'Caminabilidad (general)'
+    },
+    'visibility': 'visible'
+  },
+  {
+    'id': 'walkability-eb-lyr',
+    'label': {
+      en: 'Walkability (low-income)',
+      es: 'Caminabilidad (bajos ingresos)'
+    },
+    'visibility': 'none'
+  },
+  {
+    'id': 'walkability-ea-lyr',
+    'label': {
+      en: 'Walkability (high-income)',
+      es: 'Caminabilidad (altos ingresos)'
+    },
+    'visibility': 'none'
+  },
+  {
+    'id': 'walkability-edj-lyr',
+    'label': {
+      en: 'Walkability (young people)',
+      es: 'Caminabilidad (jóvenes)'
+    },
+    'visibility': 'none'
+  },
+  {
+    'id': 'walkability-edv-lyr',
+    'label': {
+      en: 'Walkability (elder people)',
+      es: 'Caminabilidad (adultos mayores)'
+    },
+    'visibility': 'none'
+  },
+  {
+    'id': 'photos-lyr',
+    'label': {
+      en: 'Photos',
+      es: 'Fotos'
+    },
+    'visibility': 'visible'
+  }
+];
+
 function enableMapInteractions() {
   console.log("Making the map interactive");
 
   document.getElementById('section10').style.visibility = 'hidden';
-
-  document.getElementById('ch-5').style.visibility = 'hidden';
 
   const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].enable();
   }
 
-  setLayerOpacity({
-    layer: '3d-buildings',
-    opacity: 0
-  });
-
   // Enable navigation controls
   if (!map.hasControl(navigation)) {
     map.addControl(navigation, 'bottom-right');
   }
-
-  // Turn on utility layers
-
-  const toggleableLayers = [
-    {
-      'id': 'localidades-lyr',
-      'label': {
-        en: 'Districts',
-        es: 'Localidades'
-      },
-      'visibility': 'visible'
-    },
-    {
-      'id': 'troncales-lyr',
-      'label': {
-        en: 'TM trunk corridors',
-        es: 'Troncales TM'
-      } ,
-      'visibility': 'visible'
-    },
-    {
-      'id': 'walkability-base-lyr',
-      'label': {
-        en: 'Walkability (base)',
-        es: 'Caminabilidad (general)'
-      },
-      'visibility': 'visible'
-    },
-    {
-      'id': 'walkability-eb-lyr',
-      'label': {
-        en: 'Walkability (low-income)',
-        es: 'Caminabilidad (bajos ingresos)'
-      },
-      'visibility': 'none'
-    },
-    {
-      'id': 'walkability-ea-lyr',
-      'label': {
-        en: 'Walkability (high-income)',
-        es: 'Caminabilidad (altos ingresos)'
-      },
-      'visibility': 'none'
-    },
-    {
-      'id': 'walkability-edj-lyr',
-      'label': {
-        en: 'Walkability (young people)',
-        es: 'Caminabilidad (jóvenes)'
-      },
-      'visibility': 'none'
-    },
-    {
-      'id': 'walkability-edv-lyr',
-      'label': {
-        en: 'Walkability (elder people)',
-        es: 'Caminabilidad (adultos mayores)'
-      },
-      'visibility': 'none'
-    },
-    {
-      'id': 'photos-lyr',
-      'label': {
-        en: 'Photos',
-        es: 'Fotos'
-      },
-      'visibility': 'visible'
-    }
-  ];
 
   const layers = map.getStyle().layers;
 
@@ -593,70 +592,69 @@ function enableMapInteractions() {
 
   // Adding layers manual for interacting with the map
 
-  map.addLayer(
-    {
-      'id': 'localidades-lyr',
-      'type': 'line',
-      'source': 'localidades-src',
-      'layout': {
-        'visibility': toggleableLayers.find(l => l.id === 'localidades-lyr').visibility
+  if (!map.getLayer('localidades-lyr')) {
+    map.addLayer(
+      {
+        'id': 'localidades-lyr',
+        'type': 'line',
+        'source': 'localidades-src',
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'line-color': '#8da0cb',
+          'line-opacity': 0.2,
+          'line-width': 8
+        }
       },
-      'paint': {
-        'line-color': '#8da0cb',
-        'line-opacity': 0.2,
-        'line-width': 8
-      }
-    },
-    firstSymbolId
-  );
+      firstSymbolId
+    );
+  }
 
-  map.addLayer(
-    {
-      'id': 'troncales-lyr',
-      'type': 'line',
-      'source': 'troncales-src',
-      'layout': {
-        'visibility': toggleableLayers.find(l => l.id === 'troncales-lyr').visibility
+  if (!map.getLayer('troncales-lyr')) {
+    map.addLayer(
+      {
+        'id': 'troncales-lyr',
+        'type': 'line',
+        'source': 'troncales-src',
+        'layout': {
+          'visibility': 'none'
+        },
+        'paint': {
+          'line-color': '#D22830',
+          'line-opacity': 0.2,
+          'line-width': 8
+        }
       },
-      'paint': {
-        'line-color': '#D22830',
-        'line-opacity': 0.2,
-        'line-width': 8
+      firstSymbolId
+    );
+  }
+
+  if (!map.getLayer('photos-lyr')) {
+    map.addLayer({
+      'id': 'cluster-photos-lyr',
+      'type': 'symbol',
+      'source': 'photos-src',
+      'filter': ['has', 'point_count'],
+      'layout': {
+        'icon-image': 'camera-marker',
+        'icon-size': 1.25,
+        'visibility': 'none'
       }
-    },
-    firstSymbolId
-  );
-  
-  for (const lyr of ['walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr']) {
-    if (map.getLayer(lyr)) {
-      map.setLayoutProperty(
-        lyr,
-        'visibility',
-        'none'
-      );
-  
-      setLayerOpacity({
-        layer: lyr,
-        opacity: 1
-      });
-    }
-  }  
-
-  map.loadImage(
-    './resources/camera.png',
-    (error, image) => {
-    if (error) throw error;
-    map.addImage('camera-marker', image);
-
+    });
+      
     map.addLayer({
       'id': 'photos-lyr',
       'type': 'symbol',
       'source': 'photos-src',
+      'filter': ['!', ['has', 'point_count']],
       'layout': {
         'icon-image': 'camera-marker',
+        'icon-size': 0.75,
+        'visibility': 'none'
       }
     });
-  });
+  }
 
   // Set up the corresponding toggle button for each layer.
   for (const layer of toggleableLayers) {
@@ -664,6 +662,9 @@ function enableMapInteractions() {
     if (document.getElementById(layer.id)) {
       continue;
     }
+
+    // Showing layers accoring to configuration
+    map.setLayoutProperty(layer.id, 'visibility', layer.visibility);
 
     // Create a link.
     const link = document.createElement('a');
@@ -682,22 +683,26 @@ function enableMapInteractions() {
       e.preventDefault();
       e.stopPropagation();
 
-      const visibility = map.getLayoutProperty(
+      let visibility = map.getLayoutProperty(
         clickedLayer,
         'visibility'
       );
 
+      if (visibility === undefined) {
+        visibility = layer.visibility;
+      }
+
       // Toggle layer visibility by changing the layout object's visibility property.
       if (visibility === 'visible') {
         map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'none');
+        
         this.className = '';
-      } else {
+      } else {        
+        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
+
         this.className = 'active';
-        map.setLayoutProperty(
-          clickedLayer,
-          'visibility',
-          'visible'
-        );
       }
     };
 
@@ -705,7 +710,7 @@ function enableMapInteractions() {
     layers.appendChild(link);
   }
 
-  for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr', 'photos-lyr']) {
+  for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr', 'photos-lyr', 'cluster-photos-lyr']) {
     // When a click event occurs on a feature in the states layer,
     // open a popup at the location of the click, with description
     // HTML from the click event's properties.
@@ -716,6 +721,22 @@ function enableMapInteractions() {
           .setLngLat(e.lngLat)
           .setHTML(popupFormat(e.features[0]))
           .addTo(map);
+      } else if (e.features[0].layer.id === 'cluster-photos-lyr') {
+        const features = map.queryRenderedFeatures(e.point, {
+          layers: ['cluster-photos-lyr']
+        });
+
+        const clusterId = features[0].properties.cluster_id;
+        map.getSource('photos-src').getClusterExpansionZoom(
+          clusterId,
+          (err, zoom) => {
+            if (err) return;
+            map.easeTo({
+            center: features[0].geometry.coordinates,
+            zoom: zoom
+        });
+        }
+        );
       } else {
         // Build photo slides
         let container = document.getElementById('photo-slides-container');
@@ -783,8 +804,6 @@ function disableMapInteractions() {
 
   document.getElementById('section10').style.visibility = 'visible';
 
-  document.getElementById('ch-5').style.visibility = 'visible';
-
   const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].disable();
@@ -798,24 +817,11 @@ function disableMapInteractions() {
   let menu = document.getElementById('menu');
   if (menu.hasChildNodes()) {
     menu.innerHTML = '';
-
-    // Removing static layers
-    map.removeLayer('localidades-lyr');
-    map.removeLayer('troncales-lyr');
-    map.removeLayer('photos-lyr');
-
-    map.setLayoutProperty(
-      'walkability-base-lyr',
-      'visibility',
-      'visible'
-    );
   }
 
-  // Disabling listeners for walkabiliy layers
-  for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr']) {
-    map.off('click', lyr);
-    map.off('mouseenter', lyr);
-    map.off('mouseleave', lyr);
+  // Hidden all layers
+  for (const layer of toggleableLayers) {
+    map.setLayoutProperty(layer.id, 'visibility', 'none');
   }
 
   // Hide color scale
@@ -859,7 +865,7 @@ function showSlides(n) {
 
 /* Vega Lite visualization */
 
-vegaEmbed('#vis', {
+/*vegaEmbed('#vis', {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 900,
   "height": 300,
@@ -929,4 +935,4 @@ vegaEmbed('#vis', {
       "value": 1
     }
   }
-}, { "actions": false });
+}, { "actions": false });*/
