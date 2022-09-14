@@ -517,7 +517,7 @@ function enableMapInteractions() {
     {
       'id': 'localidades-lyr',
       'label': {
-        en: 'Localidades**',
+        en: 'Districts',
         es: 'Localidades'
       },
       'visibility': 'visible'
@@ -525,8 +525,8 @@ function enableMapInteractions() {
     {
       'id': 'troncales-lyr',
       'label': {
-        en: 'SITP trunks',
-        es: 'Troncales SITP'
+        en: 'TM trunk corridors',
+        es: 'Troncales TM'
       } ,
       'visibility': 'visible'
     },
@@ -753,7 +753,7 @@ function enableMapInteractions() {
   
   function popupFormat(e) {
     let title = {
-      en: 'Localidad',
+      en: 'District',
       es: 'Localidad'
     };
 
@@ -897,7 +897,7 @@ vegaEmbed('#vis', {
     "y": {
       "field": "density",
       "type": "quantitative",
-      "title": null
+      "title": lang === "en" ? "Frecuency" : "Frecuencia"
     },
     "color": {
       "field": "LocNombre",
@@ -910,7 +910,7 @@ vegaEmbed('#vis', {
         "symbolStrokeWidth": 5,
         "columns": 2
       },
-      "title": "Localidad"
+      "title": lang === "en" ? "District" : "Localidad"
     },
     "opacity": {
       "condition": {
