@@ -398,6 +398,10 @@ var config = {
         {
           layer: 'walkability-lyr',
           opacity: 0
+        },
+        {
+          layer: '3d-buildings',
+          opacity: 0
         }
       ],
       onChapterExit: []

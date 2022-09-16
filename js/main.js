@@ -504,7 +504,8 @@ const toggleableLayers = [
       en: 'Districts',
       es: 'Localidades'
     },
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': false
   },
   {
     'id': 'troncales-lyr',
@@ -512,7 +513,8 @@ const toggleableLayers = [
       en: 'TM trunk corridors',
       es: 'Troncales TM'
     } ,
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': false
   },
   {
     'id': 'walkability-base-lyr',
@@ -520,7 +522,8 @@ const toggleableLayers = [
       en: 'Walkability (base)',
       es: 'Caminabilidad (general)'
     },
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': true
   },
   {
     'id': 'walkability-eb-lyr',
@@ -528,7 +531,8 @@ const toggleableLayers = [
       en: 'Walkability (low-income)',
       es: 'Caminabilidad (bajos ingresos)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'walkability-ea-lyr',
@@ -536,7 +540,8 @@ const toggleableLayers = [
       en: 'Walkability (high-income)',
       es: 'Caminabilidad (altos ingresos)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'walkability-edj-lyr',
@@ -544,7 +549,8 @@ const toggleableLayers = [
       en: 'Walkability (young people)',
       es: 'Caminabilidad (jóvenes)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'walkability-edv-lyr',
@@ -552,7 +558,8 @@ const toggleableLayers = [
       en: 'Walkability (elder people)',
       es: 'Caminabilidad (adultos mayores)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'photos-lyr',
@@ -560,16 +567,20 @@ const toggleableLayers = [
       en: 'Photos',
       es: 'Fotos'
     },
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': false
   }
 ];
 
 function enableMapInteractions() {
   console.log("Making the map interactive");
 
+  document.getElementById('section07').style.visibility = 'visible';
   document.getElementById('section10').style.visibility = 'hidden';
+  document.getElementById("chart-icon").style.visibility = 'visible';
+  document.getElementById("scale").style.visibility = 'visible';
 
-  const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
+  const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].enable();
   }
@@ -702,11 +713,21 @@ function enableMapInteractions() {
         if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'none');
         
         this.className = '';
-      } else {        
-        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
+      } else {
 
-        this.className = 'active';
+        // First ensude to hide all exclusive layers
+        for (const exclusiveLayer of toggleableLayers.filter(l => l.exclusive)) {
+          if (clickedLayer !== exclusiveLayer.id) {
+            map.setLayoutProperty(exclusiveLayer.id, 'visibility', 'none');
+            document.getElementById(exclusiveLayer.id).className = '';
+          } else {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            this.className = 'active';
+          }
+          
+        }
+
+        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
       }
     };
 
@@ -715,11 +736,7 @@ function enableMapInteractions() {
   }
 
   for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr', 'photos-lyr', 'cluster-photos-lyr']) {
-    // When a click event occurs on a feature in the states layer,
-    // open a popup at the location of the click, with description
-    // HTML from the click event's properties.
     map.on('click', lyr, (e) => {
-      //console.log(e.features[0]);
       if (e.features[0].layer.id.startsWith('walkability')) {
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
@@ -797,18 +814,17 @@ function enableMapInteractions() {
 
     return `<h3>${title[lang]}: ${e.properties.LocNombre}</h3><h4>${subtitle[lang]}: ${e.properties[walk_prop[e.layer.id]].toFixed(3)}</h4>`
   }
-
-  // Show color scale
-  document.getElementById("scale").style.visibility = 'visible';
-
 }
 
 function disableMapInteractions() {
   console.log("Making the map NOT interactive again");
 
+  document.getElementById('section07').style.visibility = 'hidden';
   document.getElementById('section10').style.visibility = 'visible';
+  document.getElementById("chart-icon").style.visibility = 'hidden';
+  document.getElementById("scale").style.visibility = 'hidden';
 
-  const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
+  const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].disable();
   }
@@ -832,10 +848,140 @@ function disableMapInteractions() {
         map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'none');
       }
     }
+  }  
+}
+
+/* EDA popup */ 
+
+function openEDAPopup() {
+
+  // TODO: Get selected walkability layer
+
+  let districts = [
+    { "id": "chk-BOGOTA", "label": "Bogotá", "checked": "checked" },
+    { "id": "chk-ANTONIO NARIÑO", "label": "Antonio Nariño", "checked": "" },
+    { "id": "chk-BARRIOS UNIDOS", "label": "Barrios Unidos", "checked": "" },
+    { "id": "chk-BOSA", "label": "Bosa", "checked": "" },
+    { "id": "chk-CANDELARIA", "label": "Candelaria", "checked": "" },
+    { "id": "chk-CHAPINERO", "label": "Chapinero", "checked": "" },
+    { "id": "chk-CIUDAD BOLIVAR", "label": "Ciudad Bolivar", "checked": "" },
+    { "id": "chk-ENGATIVA", "label": "Engativá", "checked": "" },
+    { "id": "chk-FONTIBON", "label": "Fontibón", "checked": "" },
+    { "id": "chk-KENNEDY", "label": "Kennedy", "checked": "" },
+    { "id": "chk-LOS MARTIRES", "label": "Los Martires", "checked": "" },
+    { "id": "chk-PUENTE ARANDA", "label": "Puente Aranda", "checked": "" },
+    { "id": "chk-RAFAEL URIBE URIBE", "label": "Rafael Uribe Uribe", "checked": "" },
+    { "id": "chk-SAN CRISTOBAL", "label": "San Cristobal", "checked": "" },
+    { "id": "chk-SANTA FE", "label": "Sanat Fé", "checked": "" },
+    { "id": "chk-SUBA", "label": "Suba", "checked": "" },
+    { "id": "chk-TEUSAQUILLO", "label": "Teusaquillo", "checked": "" },
+    { "id": "chk-TUNJUELITO", "label": "Tunjuelito", "checked": "" },
+    { "id": "chk-USAQUEN", "label": "Usaquén", "checked": "" },
+    { "id": "chk-USME", "label": "Usme", "checked": "" },
+  ];
+
+  function drawChart(districts) {
+    console.log(districts);
+    console.log( districts.map(d => {
+      return { "field": "LocNombre", "equal": d.id.replace('chk-', '') }
+    }));
+    vegaEmbed('#vis', {
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+      "width": 900,
+      "height": 500,
+      "data": {
+        "url": "./data/walkability.csv"
+      },
+      "mark": {
+        "type": "line"
+      },
+      "transform": [
+        {
+          "density": "Walk_Base",
+          "groupby": [ "LocNombre" ],
+          "extent": [0, 1]
+        },
+        {
+          "filter": {
+            "or": districts.map(d => {
+              return { "field": "LocNombre", "equal": d.id.replace('chk-', '') }
+            })
+          }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "title": lang === "en" ? "Walkability index" : "Índice de caminabilidad"
+        },
+        "y": {
+          "field": "density",
+          "type": "quantitative",
+          "title": lang === "en" ? "Density" : "Densidad"
+        },
+        "color": {
+          "field": "LocNombre",
+          "scale": {
+            "scheme": "tableau10"
+          },
+          "legend": {
+            "symbolType": "circle",
+            "symbolSize": 50,
+            "symbolStrokeWidth": 5,
+            "columns": 1
+          },
+          "title": lang === "en" ? "District" : "Localidad"
+        },
+        "opacity": {
+          "value": 0.9
+        },
+        "strokeWidth": {
+          "value": 2
+        }
+      }
+    }, { "actions": false });
   }
 
-  // Hide color scale
-  document.getElementById("scale").style.visibility = 'hidden';
+  let districtSelection = document.getElementById('district-selection');
+  districts.map((d, i) => {
+    let input = document.createElement('input');
+    input.type = 'checkbox';
+    input.id = d.id;
+    input.name = d.id;
+    input.checked = d.checked;
+    districtSelection.appendChild(input);
+
+    input.addEventListener('click', e => {
+      let checked = districts.find(d => d.id === e.target.id).checked;
+      if (checked === 'checked') {
+        districts.find(d => d.id === e.target.id).checked = '';
+      } else {
+        districts.find(d => d.id === e.target.id).checked = 'checked';
+      }
+
+      drawChart(districts.filter(d => d.checked !== ''));
+    });
+
+    let label = document.createElement('label');
+    label.for = d.id;
+    label.innerHTML = d.label + '&nbsp;&nbsp;';
+    districtSelection.appendChild(label);
+
+    if (i == 9) {
+      districtSelection.appendChild(document.createElement('br'));
+    }
+  });
+
+  
+
+  drawChart(districts.filter(d => d.checked !== ''));
+  
+  document.getElementById('eda-popup').style.width = '100%';
+}
+
+function closeEDAPopup() {
+  document.getElementById('eda-popup').style.width = '0%';
 }
 
 /* Photos popup */ 
@@ -873,76 +1019,11 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";
 }
 
+/* Go back action */
+
+function goBack() {
+  window.scrollBy(0, -window.innerHeight);
+}
+
 /* Vega Lite visualization */
 
-/*vegaEmbed('#vis', {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 900,
-  "height": 300,
-  "data": {
-    "url": "https://raw.githubusercontent.com/fabiancpl/walkability/main/data/walkability.csv"
-  },
-  "mark": {
-    "type": "line"
-  },
-  "transform": [
-    {
-      "density": "Walk_Base",
-      "groupby": ["LocNombre"],
-      "extent": [0.2, 0.8]
-    }
-  ],
-  "params": [
-    {
-      "name": "loc",
-      "select": {
-        "type": "point",
-        "fields": [
-          "LocNombre"
-        ]
-      },
-      "bind": "legend"
-    }
-  ],
-  "encoding": {
-    "x": {
-      "field": "value",
-      "type": "quantitative",
-      "title": lang === "en" ? "Walkability index" : "Índice de caminabilidad"
-    },
-    "y": {
-      "field": "density",
-      "type": "quantitative",
-      "title": lang === "en" ? "Frecuency" : "Frecuencia"
-    },
-    "color": {
-      "field": "LocNombre",
-      "scale": {
-        "scheme": "tableau20"
-      },
-      "legend": {
-        "symbolType": "circle",
-        "symbolSize": 50,
-        "symbolStrokeWidth": 5,
-        "columns": 2
-      },
-      "title": lang === "en" ? "District" : "Localidad"
-    },
-    "opacity": {
-      "condition": {
-        "param": "loc",
-        "empty": false,
-        "value": 1
-      },
-      "value": 0.3
-    },
-    "strokeWidth": {
-      "condition": {
-        "param": "loc",
-        "empty": false,
-        "value": 4
-      },
-      "value": 1
-    }
-  }
-}, { "actions": false });*/
