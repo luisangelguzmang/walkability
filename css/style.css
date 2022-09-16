@@ -205,7 +205,8 @@ a:visited {
 }
 
 .scroll-down a:hover {
-  opacity: .5;
+  /*opacity: .5;*/
+  cursor: default;
 }
 
 #section10 a {
@@ -280,6 +281,90 @@ a:visited {
   }
 }
 
+/* Go back icon */
+
+.go-back a {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  z-index: 2;
+  display: inline-block;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  color: #444;
+  font: normal 400 20px/1 'Josefin Sans', sans-serif;
+  letter-spacing: .1em;
+  text-decoration: none;
+  transition: opacity .3s;
+}
+
+.go-back a:hover {
+  opacity: .5;
+  cursor: pointer;
+}
+
+#section07 a {
+  padding-top: 60px;
+}
+
+#section07 a span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  border-left: 2px solid #444;
+  border-bottom: 2px solid #444;
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+  -webkit-animation: sdb07 2s infinite;
+  animation: sdb07 2s infinite;
+  opacity: 0;
+  box-sizing: border-box;
+}
+
+#section07 a span:nth-of-type(1) {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+#section07 a span:nth-of-type(2) {
+  top: 16px;
+  -webkit-animation-delay: .15s;
+  animation-delay: .15s;
+}
+
+#section07 a span:nth-of-type(3) {
+  top: 32px;
+  -webkit-animation-delay: .3s;
+  animation-delay: .3s;
+}
+
+@-webkit-keyframes sdb07 {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes sdb07 {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 /* Menu */
 
 #menu {
@@ -322,6 +407,20 @@ a:visited {
   
 #menu a.active:hover {
   background: #3074a4;
+}
+
+#chart-icon {
+  background: #fff;
+  position: fixed;
+  z-index: 1;
+  width: 50px;
+  top: 305px;
+  right: 15px;
+  border-radius: 5px;
+  border: 2px solid #3887be;
+  padding: 3px;
+  visibility: hidden;
+  cursor: pointer;
 }
 
 /* Popup */
@@ -388,9 +487,10 @@ a:visited {
   z-index: 3;
   top: 0;
   left: 0;
-  background-color: rgba(0,0,0, 0.9);
+  background-color: #FAFBFA;;
   overflow-x: hidden;
   transition: 0.5s;
+  opacity: 0.9;
 }
 
 .overlay-content {

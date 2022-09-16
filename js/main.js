@@ -504,7 +504,8 @@ const toggleableLayers = [
       en: 'Districts',
       es: 'Localidades'
     },
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': false
   },
   {
     'id': 'troncales-lyr',
@@ -512,7 +513,8 @@ const toggleableLayers = [
       en: 'TM trunk corridors',
       es: 'Troncales TM'
     } ,
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': false
   },
   {
     'id': 'walkability-base-lyr',
@@ -520,7 +522,8 @@ const toggleableLayers = [
       en: 'Walkability (base)',
       es: 'Caminabilidad (general)'
     },
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': true
   },
   {
     'id': 'walkability-eb-lyr',
@@ -528,7 +531,8 @@ const toggleableLayers = [
       en: 'Walkability (low-income)',
       es: 'Caminabilidad (bajos ingresos)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'walkability-ea-lyr',
@@ -536,7 +540,8 @@ const toggleableLayers = [
       en: 'Walkability (high-income)',
       es: 'Caminabilidad (altos ingresos)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'walkability-edj-lyr',
@@ -544,7 +549,8 @@ const toggleableLayers = [
       en: 'Walkability (young people)',
       es: 'Caminabilidad (jóvenes)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'walkability-edv-lyr',
@@ -552,7 +558,8 @@ const toggleableLayers = [
       en: 'Walkability (elder people)',
       es: 'Caminabilidad (adultos mayores)'
     },
-    'visibility': 'none'
+    'visibility': 'none',
+    'exclusive': true
   },
   {
     'id': 'photos-lyr',
@@ -560,16 +567,20 @@ const toggleableLayers = [
       en: 'Photos',
       es: 'Fotos'
     },
-    'visibility': 'visible'
+    'visibility': 'visible',
+    'exclusive': false
   }
 ];
 
 function enableMapInteractions() {
   console.log("Making the map interactive");
 
+  document.getElementById('section07').style.visibility = 'visible';
   document.getElementById('section10').style.visibility = 'hidden';
+  document.getElementById("chart-icon").style.visibility = 'visible';
+  document.getElementById("scale").style.visibility = 'visible';
 
-  const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
+  const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].enable();
   }
@@ -702,11 +713,21 @@ function enableMapInteractions() {
         if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'none');
         
         this.className = '';
-      } else {        
-        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
+      } else {
 
-        this.className = 'active';
+        // First ensude to hide all exclusive layers
+        for (const exclusiveLayer of toggleableLayers.filter(l => l.exclusive)) {
+          if (clickedLayer !== exclusiveLayer.id) {
+            map.setLayoutProperty(exclusiveLayer.id, 'visibility', 'none');
+            document.getElementById(exclusiveLayer.id).className = '';
+          } else {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            this.className = 'active';
+          }
+          
+        }
+
+        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
       }
     };
 
@@ -715,11 +736,7 @@ function enableMapInteractions() {
   }
 
   for (const lyr of ['walkability-base-lyr', 'walkability-eb-lyr', 'walkability-ea-lyr', 'walkability-edj-lyr', 'walkability-edv-lyr', 'photos-lyr', 'cluster-photos-lyr']) {
-    // When a click event occurs on a feature in the states layer,
-    // open a popup at the location of the click, with description
-    // HTML from the click event's properties.
     map.on('click', lyr, (e) => {
-      //console.log(e.features[0]);
       if (e.features[0].layer.id.startsWith('walkability')) {
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
@@ -797,18 +814,17 @@ function enableMapInteractions() {
 
     return `<h3>${title[lang]}: ${e.properties.LocNombre}</h3><h4>${subtitle[lang]}: ${e.properties[walk_prop[e.layer.id]].toFixed(3)}</h4>`
   }
-
-  // Show color scale
-  document.getElementById("scale").style.visibility = 'visible';
-
 }
 
 function disableMapInteractions() {
   console.log("Making the map NOT interactive again");
 
+  document.getElementById('section07').style.visibility = 'hidden';
   document.getElementById('section10').style.visibility = 'visible';
+  document.getElementById("chart-icon").style.visibility = 'hidden';
+  document.getElementById("scale").style.visibility = 'hidden';
 
-  const handlers = [/*'scrollZoom',*/ 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
+  const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
   for (const handler of handlers) {
     map[handler].disable();
   }
@@ -832,10 +848,17 @@ function disableMapInteractions() {
         map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'none');
       }
     }
-  }
+  }  
+}
 
-  // Hide color scale
-  document.getElementById("scale").style.visibility = 'hidden';
+/* EDA popup */ 
+
+function openEDAPopup() {
+  document.getElementById('eda-popup').style.width = '100%';
+}
+
+function closeEDAPopup() {
+  document.getElementById('eda-popup').style.width = '0%';
 }
 
 /* Photos popup */ 
@@ -873,12 +896,18 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";
 }
 
+/* Go back action */
+
+function goBack() {
+  window.scrollBy(0, -window.innerHeight);
+}
+
 /* Vega Lite visualization */
 
-/*vegaEmbed('#vis', {
+vegaEmbed('#vis', {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 900,
-  "height": 300,
+  "height": 500,
   "data": {
     "url": "https://raw.githubusercontent.com/fabiancpl/walkability/main/data/walkability.csv"
   },
@@ -945,4 +974,4 @@ function showSlides(n) {
       "value": 1
     }
   }
-}, { "actions": false });*/
+}, { "actions": false });

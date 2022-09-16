@@ -20,6 +20,8 @@
     </section>
     
     <nav id="menu"></nav>
+
+    <img id="chart-icon" src="./resources/chart-icon.png"  onclick="openEDAPopup()" />
     
     <div id="scale">
       <img src="./resources/scale.svg">
@@ -41,8 +43,24 @@
       </div>
     </div>
 
+    <div id="eda-popup" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeEDAPopup()">&times;</a>
+      <div class="overlay-content">
+        <div id="vis"></div>
+      </div>
+    </div>
+
+    <section id="section07" class="go-back" style="visibility: hidden;">
+      <a onclick='return goBack()'>
+        <span></span>
+        <span></span>
+        <span></span>
+        Go back
+      </a>
+    </section>
+
     <section id="section10" class="scroll-down">
-      <a href="#">
+      <a href="javascript:;">
         <span></span>
       </a>
     </section>
