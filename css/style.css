@@ -81,6 +81,11 @@ a:visited {
   height: 8vh !important;
 }
 
+#uninorte-logo {
+  padding-bottom: 3.5vh !important;
+  height: 5vh !important;
+}
+
 #footer {
   width: 100%;
   min-height: 5vh;
@@ -108,13 +113,13 @@ a:visited {
 }
 
 .lefty {
-  width: 33vw;
+  width: 40vw;
   margin-left: 5vw;
 }
 
 .righty {
-  width: 33vw;
-  margin-left: 62vw;
+  width: 40vw;
+  margin-left: 54vw;
   text-align: right;
 }
 
