@@ -18,11 +18,11 @@ var config = {
   images: [
     {
       src: './resources/uniandes_150x.png',
-      className: 'uniandes-logo'
+      id: 'uniandes-logo'
     },
     {
       src: './resources/grupo-sur.png',
-      className: 'gruposur-logo'
+      id: 'gruposur-logo'
     }
   ],
   byline: false,

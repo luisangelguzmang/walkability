@@ -72,12 +72,13 @@ a:visited {
   padding-bottom: 2vh;
 }
 
-#header img.uniandes-logo {
-  padding-bottom: 4vh;
+#uniandes-logo {
+  padding-bottom: 4vh !important;
+  height: 4vh !important;
 }
   
-#header img.gruposur-logo {
-  height: 90px;
+#gruposur-logo {
+  height: 8vh !important;
 }
 
 #footer {

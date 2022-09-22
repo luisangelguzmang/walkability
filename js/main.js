@@ -77,19 +77,19 @@ if (config.subtitle) {
   header.appendChild(subtitleText);
 }
 
-if (config.byline) {
-  var bylineText = document.createElement('p');
-  bylineText.innerText = config.byline;
-  header.appendChild(bylineText);
-}
-
 if (config.images) {
   for (const image of config.images) {
     let img = document.createElement('img');
     img.src = image.src;
-    img.className = image.className;
+    img.setAttribute('id', image.id);
     header.appendChild(img);
   }
+}
+
+if (config.byline) {
+  var bylineText = document.createElement('p');
+  bylineText.innerText = config.byline;
+  header.appendChild(bylineText);
 }
 
 if (header.innerText.length > 0) {
@@ -714,20 +714,23 @@ function enableMapInteractions() {
         
         this.className = '';
       } else {
-
-        // First ensude to hide all exclusive layers
-        for (const exclusiveLayer of toggleableLayers.filter(l => l.exclusive)) {
-          if (clickedLayer !== exclusiveLayer.id) {
-            map.setLayoutProperty(exclusiveLayer.id, 'visibility', 'none');
-            document.getElementById(exclusiveLayer.id).className = '';
-          } else {
-            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-            this.className = 'active';
+        if (clickedLayer.startsWith('walkability')) {
+          // First ensure to hide all exclusive layers
+          for (const exclusiveLayer of toggleableLayers.filter(l => l.exclusive)) {
+            if (clickedLayer !== exclusiveLayer.id) {
+              map.setLayoutProperty(exclusiveLayer.id, 'visibility', 'none');
+              document.getElementById(exclusiveLayer.id).className = '';
+            } else {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+              this.className = 'active';
+            }
           }
-          
-        }
+        } else {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+          if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
 
-        if (clickedLayer === 'photos-lyr') map.setLayoutProperty('cluster-photos-lyr', 'visibility', 'visible');
+          this.className = 'active';
+        }
       }
     };
 
@@ -1024,6 +1027,3 @@ function showSlides(n) {
 function goBack() {
   window.scrollBy(0, -window.innerHeight);
 }
-
-/* Vega Lite visualization */
-
