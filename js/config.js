@@ -9,7 +9,7 @@ var config = {
   use3dTerrain: true,
   title: {
     en: 'Desirable streets for pedestrians: Using a street-level index to assess walkability in Bogotá',
-    es: 'Calles deseadas por peatones: Uso de un índice a nivel de calles para evaluar la caminabilidad en Bogotá'
+    es: 'Calles deseadas por peatones: Índice a nivel de calle para evaluar la caminabilidad en Bogotá'
   },
   subtitle: {
     en: 'What is the quality of pedestrian infrastructure in the city?',
@@ -18,11 +18,11 @@ var config = {
   images: [
     {
       src: './resources/uniandes_150x.png',
-      className: 'uniandes-logo'
+      id: 'uniandes-logo'
     },
     {
       src: './resources/grupo-sur.png',
-      className: 'gruposur-logo'
+      id: 'gruposur-logo'
     }
   ],
   byline: false,
@@ -68,7 +68,7 @@ var config = {
       },
       description: {
         en: 'Walkability is defined as the extent to which the urban environment is pedestrian-friendly. In this case, we evaluate the quality of the city’s pedestrian network to understand the factors that influence walkability including observable components (e.g., built environment) and non-observable (e.g., perceptions) factors at meso and microscale levels and according to pedestrian characteristics.',
-        es: 'Caminabilidad se define como la medida en que el entorno urbano es amigable para los peatones. En este caso, evaluamos la calidad de la red peatonal de la ciudad para comprender los factores que influyen en la caminabilidad, incluidos los componentes observables (p. ej., entorno construido) y los factores no observables (p. ej., percepciones) a niveles de meso y microescala y de acuerdo con las características de los peatones.'
+        es: 'Caminabilidad (walkability en inglés) se define como una medida en que el entorno urbano es amigable para los peatones. En este caso, evaluamos la calidad de la red peatonal de la ciudad para comprender los factores que influyen en la caminabilidad, incluyendo los componentes observables del entorno construido (p.e. calidad del andén, usos del suelo, tráfico, etc.) y los factores no observables (percepciones) a niveles de meso y microescala. También se tuvieron en cuenta las características socioeconómicas de los peatones.'
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -96,7 +96,7 @@ var config = {
         es: '¿Cuáles son las características de los peatones?'
       } ,
       image: {
-        src: './resources/animations/personajes_v2_3.gif',
+        src: './resources/vectors/characters.png',
         styles: {
           objectFit: 'cover',
           height: '160px',
@@ -104,8 +104,8 @@ var config = {
         }
       },
       description: {
-        en: 'We did differentiated assessments according to socioeconomic levels, age ranges, and gender differences. We did not find differences between mens and womens perceptions.',
-        es: 'Hicimos evaluaciones diferenciadas según niveles socioeconómicos, rangos de edad y diferencias de género. No encontramos diferencias entre las percepciones de hombres y mujeres.'
+        en: 'We did differentiated assessments according to socioeconomic levels, age ranges, and gender. We did not find differences between men and women perceptions.',
+        es: 'Hicimos evaluaciones diferenciadas según el nivel socioeconómico, rangos de edad y sexo. No encontramos diferencias entre las percepciones de hombres y mujeres.'
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -147,7 +147,7 @@ var config = {
       },
       description: {
         en: 'Our proposed formulation of the walkability index (WI) includes observable components of the built environment and pedestrians’ perceptions of five factors influencing walkability: Pedestrian infrastructure robustness, Road safety, Personal security, Destination access, and Comfort. The WI is composed of these non-observable factors (perceptions) and their corresponding components (observable attributes of the built environment).',
-        es: 'Nuestra formulación propuesta del índice de caminabilidad (WI) incluye componentes observables del entorno construido y las percepciones de los peatones de cinco factores que influyen en la transitabilidad: solidez de la infraestructura peatonal, seguridad vial, seguridad personal, acceso al destino y comodidad. El WI está compuesto por estos factores no observables (percepciones) y sus componentes correspondientes (atributos observables del entorno construido).' 
+        es: 'Nuestra formulación propuesta del índice de caminabilidad (WI) incluye componentes observables del entorno construido y las percepciones de los peatones de cinco factores que influyen en la caminabilidad: calidad de la infraestructura peatonal, seguridad vial, seguridad personal, actividades cercanas y comodidad. El WI lo forman las percepciones de estos factores no observables y sus correspondientes componentes (atributos observados del entorno construido).' 
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -176,7 +176,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v1.gif',
+        src: './resources/vectors/average.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -186,7 +186,7 @@ var config = {
       },
       description: {
         en: 'In general, pedestrians in Bogotá prefer areas that are safe from aggression or crime and with low interaction with motorized traffic. What an average pedestrian values most about the built environment in the city is that there are traffic lights (for safe crossings), police presence, good lighting, trees, and inclusive infrastructure for the elderly, children, and people with physical limitations.',
-        es:  'En general, los peatones en Bogotá prefieren áreas seguras de agresiones o delincuencia y con poca interacción con el tráfico motorizado. Lo que más valora un peatón promedio del entorno construido en la ciudad es que haya semáforos (para cruces seguros), presencia policial, buena iluminación, arbolado e infraestructura inclusiva para adultos mayores, niños y personas con limitaciones físicas.'
+        es:  'En general, los peatones en Bogotá prefieren áreas seguras (no delincuencia) y con baja interacción con el tráfico motorizado. Lo que más valora un peatón promedio del entorno construido de la ciudad, es que haya semáforos (para cruzar seguros), que haya policías, buena iluminación, arbolado e infraestructura inclusiva para adultos mayores, niños y personas con limitaciones físicas. Los jóvenes también prefieren espacios peatonales seguros (tanto en seguridad vial como seguridad personal) con dispositivos de control de tráfico. Estas personas también otorgan gran importancia a la infraestructura inclusiva, la buena calidad de los andenes y la presencia de establecimientos comerciales.'
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -211,7 +211,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v5.gif',
+        src: './resources/vectors/young.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -221,7 +221,7 @@ var config = {
       },
       description: {
         en: 'Young people also prefer safe pedestrian areas (both road safety and personal security) with traffic control devices. These people also attach great importance to inclusive infrastructure, the good quality of the sidewalks, and the presence of commercial establishments.',
-        es: 'Los jóvenes también prefieren espacios peatonales seguros (tanto seguridad vial como seguridad personal) con dispositivos de control de tráfico. Estas personas también otorgan gran importancia a la infraestructura inclusiva, la buena calidad de las aceras y la presencia de establecimientos comerciales.'
+        es: 'Los jóvenes también prefieren espacios peatonales seguros (tanto en seguridad vial como seguridad personal) con dispositivos de control de tráfico. Estas personas también otorgan gran importancia a la infraestructura inclusiva, la buena calidad de los andenes y la presencia de establecimientos comerciales.'
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -246,7 +246,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v3.gif',
+        src: './resources/vectors/elderly.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -256,7 +256,7 @@ var config = {
       },
       description: {
         en: 'As for the elderly, traffic control devices, good lighting, the presence of ramps and trees, and little congestion with traffic calming, are the most important attributes of the built environment.',
-        es: 'En cuanto a los adultos mayores, los dispositivos de control de tráfico, buena iluminación, presencia de rampas y árboles, y poca congestión con pacificación del tráfico, son los atributos más importantes del entorno construido.'
+        es: 'En cuanto a los adultos mayores, los dispositivos de control de tráfico, la buena iluminación, la presencia de rampas y árboles y poca congestión con pacificación del tráfico, son los atributos más importantes del entorno construido.'
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -281,7 +281,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v4.gif',
+        src: './resources/vectors/low-income.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -291,8 +291,8 @@ var config = {
       },
       description: {
         en: 'People of low-income neighborhoods prefer safety above all else: they highly value the presence of traffic control devices, as well as police and security cameras. They also value adequate infrastructure in terms of inclusion, quality, and connectivity. The presence of trees and commercial areas is also important.',
-        es: 'Las personas de bajos ingresos prefieren la seguridad por encima de todo: valoran mucho la presencia de dispositivos de control de tráfico, así como cámaras policiales y de seguridad. También valoran la infraestructura adecuada en términos de inclusión, calidad y conectividad. La presencia de árboles y áreas comerciales también es importante.'
-      } ,
+        es: 'Las personas de bajos ingresos prefieren la seguridad por encima de todo: valoran mucho la presencia de dispositivos de control de tráfico, así como la presencia de cámaras policiales y de seguridad. También valoran la infraestructura peatonal adecuada en términos de inclusión, calidad y conectividad. La presencia de árboles y áreas comerciales también es importante.'
+      },
       location: {
         center: [-74.070074, 4.610067],
         zoom: 15,
@@ -316,7 +316,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v2.gif',
+        src: './resources/vectors/high-income.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -326,7 +326,7 @@ var config = {
       },
       description: {
         en: 'In addition to the need to feel safer, high-income people appreciate that there are more people on the street (pedestrian activity), calm traffic zones with police, commercial activity, access to public transport, with trees and good lighting.',
-        es: 'Además de la necesidad de sentirse más seguros, las personas de altos ingresos valoran que haya más gente en la calle (actividad peatonal), zonas tranquilas de tránsito con policía, actividad comercial, acceso al transporte público, con árboles y buena iluminación.'
+        es: 'Además de la necesidad de sentirse más seguros en la calle, las personas de altos ingresos valoran que haya más gente caminando, zonas tranquilas respecto al tráfico con policía, actividad comercial, acceso al transporte público, árboles y buena iluminación en la noche.'
       },
       location: {
         center: [-74.070074, 4.610067],
