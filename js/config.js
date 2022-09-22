@@ -96,7 +96,7 @@ var config = {
         es: '¿Cuáles son las características de los peatones?'
       } ,
       image: {
-        src: './resources/animations/personajes_v2_3.gif',
+        src: './resources/vectors/characters.png',
         styles: {
           objectFit: 'cover',
           height: '160px',
@@ -176,7 +176,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v1.gif',
+        src: './resources/vectors/average.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -211,7 +211,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v5.gif',
+        src: './resources/vectors/young.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -246,7 +246,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v3.gif',
+        src: './resources/vectors/elderly.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -281,7 +281,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v4.gif',
+        src: './resources/vectors/low-income.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
@@ -316,7 +316,7 @@ var config = {
       hidden: false,
       title: false,
       image: {
-        src: './resources/animations/personaje_v2.gif',
+        src: './resources/vectors/high-income.png',
         styles: {
           objectFit: 'cover',
           height: '300px',
