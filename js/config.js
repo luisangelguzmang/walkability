@@ -23,6 +23,10 @@ var config = {
     {
       src: './resources/grupo-sur.png',
       id: 'gruposur-logo'
+    },
+    {
+      src: './resources/uninorte.png',
+      id: 'uninorte-logo'
     }
   ],
   byline: false,
@@ -99,8 +103,7 @@ var config = {
         src: './resources/vectors/characters.png',
         styles: {
           objectFit: 'cover',
-          height: '160px',
-          objectPosition: '0% 0%'
+          height: '160px'
         }
       },
       description: {
@@ -140,8 +143,8 @@ var config = {
         src: './resources/animations/city.gif',
         styles: {
           objectFit: 'cover',
-          height: '320px',
-          width: '90%',
+          height: '370px',
+          width: '100%',
           objectPosition: '0% 60%'
         }
       },
@@ -179,9 +182,8 @@ var config = {
         src: './resources/vectors/average.png',
         styles: {
           objectFit: 'cover',
-          height: '300px',
-          width: '90%',
-          objectPosition: '0% 50%'
+          height: '350px',
+          width: '100%'
         }
       },
       description: {
@@ -214,9 +216,8 @@ var config = {
         src: './resources/vectors/young.png',
         styles: {
           objectFit: 'cover',
-          height: '300px',
-          width: '90%',
-          objectPosition: '0% 57%'
+          height: '350px',
+          width: '100%'
         }
       },
       description: {
@@ -249,9 +250,8 @@ var config = {
         src: './resources/vectors/elderly.png',
         styles: {
           objectFit: 'cover',
-          height: '300px',
-          width: '90%',
-          objectPosition: '0% 57%'
+          height: '350px',
+          width: '100%'
         }
       },
       description: {
@@ -284,9 +284,8 @@ var config = {
         src: './resources/vectors/low-income.png',
         styles: {
           objectFit: 'cover',
-          height: '300px',
-          width: '90%',
-          objectPosition: '0% 57%'
+          height: '350px',
+          width: '100%'
         }
       },
       description: {
@@ -319,9 +318,8 @@ var config = {
         src: './resources/vectors/high-income.png',
         styles: {
           objectFit: 'cover',
-          height: '300px',
-          width: '90%',
-          objectPosition: '0% 45%'
+          height: '350px',
+          width: '100%'
         }
       },
       description: {
