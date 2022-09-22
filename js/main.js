@@ -861,124 +861,142 @@ function openEDAPopup() {
   // TODO: Get selected walkability layer
 
   let districts = [
-    { "id": "chk-BOGOTA", "label": "Bogotá", "checked": "checked" },
-    { "id": "chk-ANTONIO NARIÑO", "label": "Antonio Nariño", "checked": "" },
-    { "id": "chk-BARRIOS UNIDOS", "label": "Barrios Unidos", "checked": "" },
-    { "id": "chk-BOSA", "label": "Bosa", "checked": "" },
-    { "id": "chk-CANDELARIA", "label": "Candelaria", "checked": "" },
-    { "id": "chk-CHAPINERO", "label": "Chapinero", "checked": "" },
-    { "id": "chk-CIUDAD BOLIVAR", "label": "Ciudad Bolivar", "checked": "" },
-    { "id": "chk-ENGATIVA", "label": "Engativá", "checked": "" },
-    { "id": "chk-FONTIBON", "label": "Fontibón", "checked": "" },
-    { "id": "chk-KENNEDY", "label": "Kennedy", "checked": "" },
-    { "id": "chk-LOS MARTIRES", "label": "Los Martires", "checked": "" },
-    { "id": "chk-PUENTE ARANDA", "label": "Puente Aranda", "checked": "" },
-    { "id": "chk-RAFAEL URIBE URIBE", "label": "Rafael Uribe Uribe", "checked": "" },
-    { "id": "chk-SAN CRISTOBAL", "label": "San Cristobal", "checked": "" },
-    { "id": "chk-SANTA FE", "label": "Sanat Fé", "checked": "" },
-    { "id": "chk-SUBA", "label": "Suba", "checked": "" },
-    { "id": "chk-TEUSAQUILLO", "label": "Teusaquillo", "checked": "" },
-    { "id": "chk-TUNJUELITO", "label": "Tunjuelito", "checked": "" },
-    { "id": "chk-USAQUEN", "label": "Usaquén", "checked": "" },
-    { "id": "chk-USME", "label": "Usme", "checked": "" },
+    { "id": "chk-BOGOTA", "label": "Bogotá", "checked": "checked", "color": "#4E79A7" },
+    { "id": "chk-ANTONIO NARIÑO", "label": "Antonio Nariño", "checked": "", "color": "#F18E2C" },
+    { "id": "chk-BARRIOS UNIDOS", "label": "Barrios Unidos", "checked": "", "color": "#E15759" },
+    { "id": "chk-BOSA", "label": "Bosa", "checked": "", "color": "#76B7B2" },
+    { "id": "chk-CANDELARIA", "label": "Candelaria", "checked": "", "color": "#58A14E" },
+    { "id": "chk-CHAPINERO", "label": "Chapinero", "checked": "", "color": "#EDC849" },
+    { "id": "chk-CIUDAD BOLIVAR", "label": "Ciudad Bolivar", "checked": "", "color": "#EDC849" },
+    { "id": "chk-ENGATIVA", "label": "Engativá", "checked": "", "color": "#AF7AA1" },
+    { "id": "chk-FONTIBON", "label": "Fontibón", "checked": "", "color": "#FE9DA6" },
+    { "id": "chk-KENNEDY", "label": "Kennedy", "checked": "", "color": "#9C755F" },
+    { "id": "chk-LOS MARTIRES", "label": "Los Martires", "checked": "", "color": "#BAAFAB" },
+    { "id": "chk-PUENTE ARANDA", "label": "Puente Aranda", "checked": "", "color": "#1B9E77" },
+    { "id": "chk-RAFAEL URIBE URIBE", "label": "Rafael Uribe Uribe", "checked": "", "color": "#D95E01" },
+    { "id": "chk-SAN CRISTOBAL", "label": "San Cristobal", "checked": "", "color": "#7570B2" },
+    { "id": "chk-SANTA FE", "label": "Sanat Fé", "checked": "", "color": "#E6298A" },
+    { "id": "chk-SUBA", "label": "Suba", "checked": "", "color": "#00BED1" },
+    { "id": "chk-TEUSAQUILLO", "label": "Teusaquillo", "checked": "", "color": "#BCBF00" },
+    { "id": "chk-TUNJUELITO", "label": "Tunjuelito", "checked": "", "color": "#7F7F7F" },
+    { "id": "chk-USAQUEN", "label": "Usaquén", "checked": "", "color": "#E474C2" },
+    { "id": "chk-USME", "label": "Usme", "checked": "", "color": "#0E1117" },
   ];
 
-  function drawChart(districts) {
-    console.log(districts);
-    console.log( districts.map(d => {
-      return { "field": "LocNombre", "equal": d.id.replace('chk-', '') }
-    }));
-    vegaEmbed('#vis', {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-      "width": 900,
-      "height": 500,
-      "data": {
-        "url": "./data/walkability.csv"
-      },
-      "mark": {
-        "type": "line"
-      },
-      "transform": [
-        {
-          "density": "Walk_Base",
-          "groupby": [ "LocNombre" ],
-          "extent": [0, 1]
-        },
-        {
-          "filter": {
-            "or": districts.map(d => {
-              return { "field": "LocNombre", "equal": d.id.replace('chk-', '') }
-            })
-          }
-        }
-      ],
-      "encoding": {
-        "x": {
-          "field": "value",
-          "type": "quantitative",
-          "title": lang === "en" ? "Walkability index" : "Índice de caminabilidad"
-        },
-        "y": {
-          "field": "density",
-          "type": "quantitative",
-          "title": lang === "en" ? "Density" : "Densidad"
-        },
-        "color": {
-          "field": "LocNombre",
-          "scale": {
-            "scheme": "tableau10"
-          },
-          "legend": {
-            "symbolType": "circle",
-            "symbolSize": 50,
-            "symbolStrokeWidth": 5,
-            "columns": 1
-          },
-          "title": lang === "en" ? "District" : "Localidad"
-        },
-        "opacity": {
-          "value": 0.9
-        },
-        "strokeWidth": {
-          "value": 2
-        }
-      }
-    }, { "actions": false });
-  }
+  // set the dimensions and margins of the graph
+  const margin = {top: 30, right: 30, bottom: 30, left: 50},
+  width = 1000 - margin.left - margin.right,
+  height = 600 - margin.top - margin.bottom;
 
-  let districtSelection = document.getElementById('district-selection');
-  districts.map((d, i) => {
-    let input = document.createElement('input');
-    input.type = 'checkbox';
-    input.id = d.id;
-    input.name = d.id;
-    input.checked = d.checked;
-    districtSelection.appendChild(input);
+  // add the x Axis
+  const tickLabels = [0, .2, .4, .6, .8, 1.];
+  const x = d3.scaleLinear()
+              .domain([0, 1000])
+              .range([0, width]);
 
-    input.addEventListener('click', e => {
-      let checked = districts.find(d => d.id === e.target.id).checked;
-      if (checked === 'checked') {
-        districts.find(d => d.id === e.target.id).checked = '';
-      } else {
-        districts.find(d => d.id === e.target.id).checked = 'checked';
-      }
+  // add the y Axis
+  const y = d3.scaleLinear()
+              .range([height, 0])
+              .domain([0, 0.0075]);
 
-      drawChart(districts.filter(d => d.checked !== ''));
+  // Compute kernel density estimation
+  const kde = kernelDensityEstimator(kernelEpanechnikov(7), x.ticks(50));
+
+  // get the data
+  d3.csv("./data/walkability.csv").then( function(data) {
+
+    data = data.map(d => {
+      d.Walk_Base = +d.Walk_Base * 1000;
+      return d;
     });
 
-    let label = document.createElement('label');
-    label.for = d.id;
-    label.innerHTML = d.label + '&nbsp;&nbsp;';
-    districtSelection.appendChild(label);
+    function drawChart(districts) {
+      document.getElementById("my_dataviz").innerHTML = "";
 
-    if (i == 9) {
-      districtSelection.appendChild(document.createElement('br'));
+      // append the svg object to the body of the page
+      let svg = d3.select("#my_dataviz")
+        .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", `translate(${margin.left},${margin.top})`);
+      
+      svg.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x).ticks(5).tickFormat((d,i) => tickLabels[i]));
+      
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      districts.map(d => {
+        let district = data.filter(di => di.LocNombre === d.id.replace("chk-", ""));
+        let density = kde(district.map(function(d){  return d.Walk_Base; }));
+
+        svg.append("path")
+            .attr("class", "mypath")
+            .datum(density)
+            .attr("fill", "none")
+            .attr("opacity", ".9")
+            .attr("stroke", d.color)
+            .attr("stroke-width", 3)
+            .attr("stroke-linejoin", "round")
+            .attr("d",  d3.line()
+              .curve(d3.curveBasis)
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return y(d[1]); })
+            );
+      });
     }
+
+    let districtSelection = document.getElementById('district-selection');
+    districts.map((d, i) => {
+      let input = document.createElement('input');
+      input.type = 'checkbox';
+      input.id = d.id;
+      input.name = d.id;
+      input.checked = d.checked;
+      districtSelection.appendChild(input);
+
+      input.addEventListener('click', e => {
+        let checked = districts.find(d => d.id === e.target.id).checked;
+        if (checked === 'checked') {
+          districts.find(d => d.id === e.target.id).checked = '';
+        } else {
+          districts.find(d => d.id === e.target.id).checked = 'checked';
+        }
+
+        drawChart(districts.filter(d => d.checked !== ''));
+      });
+
+      let label = document.createElement('label');
+      label.for = d.id;
+      label.innerHTML = d.label + '&nbsp;&nbsp;';
+      districtSelection.appendChild(label);
+
+      if (i == 9) {
+        districtSelection.appendChild(document.createElement('br'));
+      }
+    });
+    
+    drawChart(districts.filter(d => d.checked !== ''));
+
   });
 
-  
+  // Function to compute density
+  function kernelDensityEstimator(kernel, X) {
+    return function(V) {
+      return X.map(function(x) {
+        return [x, d3.mean(V, function(v) { return kernel(x - v); })];
+      });
+    };
+  }
 
-  drawChart(districts.filter(d => d.checked !== ''));
+  // Kernel function 
+  function kernelEpanechnikov(k) {
+    return function(v) {
+      return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+    };
+  }
   
   document.getElementById('eda-popup').style.width = '100%';
 }
