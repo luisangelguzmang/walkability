@@ -420,7 +420,21 @@ a:visited {
   position: fixed;
   z-index: 1;
   width: 50px;
-  top: 305px;
+  top: 275px;
+  right: 15px;
+  border-radius: 5px;
+  border: 2px solid #3887be;
+  padding: 3px;
+  visibility: hidden;
+  cursor: pointer;
+}
+
+#camera-icon {
+  background: #fff;
+  position: fixed;
+  z-index: 1;
+  width: 50px;
+  top: 345px;
   right: 15px;
   border-radius: 5px;
   border: 2px solid #3887be;

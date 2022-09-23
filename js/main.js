@@ -561,7 +561,7 @@ const toggleableLayers = [
     'visibility': 'none',
     'exclusive': true
   },
-  {
+  /*{
     'id': 'photos-lyr',
     'label': {
       en: 'Photos',
@@ -569,7 +569,7 @@ const toggleableLayers = [
     },
     'visibility': 'visible',
     'exclusive': false
-  }
+  }*/
 ];
 
 function enableMapInteractions() {
@@ -578,6 +578,7 @@ function enableMapInteractions() {
   document.getElementById('section07').style.visibility = 'visible';
   document.getElementById('section10').style.visibility = 'hidden';
   document.getElementById("chart-icon").style.visibility = 'visible';
+  document.getElementById("camera-icon").style.visibility = 'visible';
   document.getElementById("scale").style.visibility = 'visible';
 
   const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
@@ -825,6 +826,7 @@ function disableMapInteractions() {
   document.getElementById('section07').style.visibility = 'hidden';
   document.getElementById('section10').style.visibility = 'visible';
   document.getElementById("chart-icon").style.visibility = 'hidden';
+  document.getElementById("camera-icon").style.visibility = 'hidden';
   document.getElementById("scale").style.visibility = 'hidden';
 
   const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch']
@@ -1109,6 +1111,45 @@ function closeEDAPopup() {
   document.getElementById('eda-popup').style.width = '0%';
 
   window.onscroll = function() {};
+}
+
+/* Photos layer */
+
+function turnOnPhotosLayer() {
+
+  const visibility = map.getLayoutProperty(
+    'photos-lyr',
+    'visibility'
+  );
+  
+  console.log(visibility);
+
+  if (visibility === 'visible') {
+    map.setLayoutProperty(
+      'photos-lyr',
+      'visibility',
+      'none'
+    );
+
+    map.setLayoutProperty(
+      'cluster-photos-lyr',
+      'visibility',
+      'none'
+    );
+  } else {
+    map.setLayoutProperty(
+      'photos-lyr',
+      'visibility',
+      'visible'
+    );
+
+    map.setLayoutProperty(
+      'cluster-photos-lyr',
+      'visibility',
+      'visible'
+    );
+  }
+
 }
 
 /* Photos popup */ 
