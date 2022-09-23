@@ -519,8 +519,8 @@ const toggleableLayers = [
   {
     'id': 'walkability-base-lyr',
     'label': {
-      en: 'Walkability (base)',
-      es: 'Caminabilidad (general)'
+      en: 'Walkability (average pedestrian)',
+      es: 'Caminabilidad (peatón promedio)'
     },
     'visibility': 'visible',
     'exclusive': true
@@ -858,24 +858,41 @@ function disableMapInteractions() {
 
 function openEDAPopup() {
 
+  // Disabling scroll temporally
+  
+  // Get the current page scroll position
+  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+
+  // if any scroll is attempted, set this to the previous value
+  window.onscroll = function() {
+    window.scrollTo(scrollLeft, scrollTop);
+  };
+
+  document.getElementById("district-title").innerHTML =
+    (lang === "en") ? "Overall and by district walkability index distribution" : "Distribución del índice de caminabilidad general y por localidad";
+
+  document.getElementById("kde-description").innerHTML =
+  (lang === "en") ? "* This chart represents a kernel density estimation for the walkability index distribution." : "* Este gráfico representa una estimación de densidad por kernel para la distribución del índice de caminabilidad.";
+
   // TODO: Get selected walkability layer
 
   let districts = [
     { "id": "chk-BOGOTA", "label": "Bogotá", "checked": "checked", "color": "#4E79A7" },
-    { "id": "chk-ANTONIO NARIÑO", "label": "Antonio Nariño", "checked": "", "color": "#F18E2C" },
-    { "id": "chk-BARRIOS UNIDOS", "label": "Barrios Unidos", "checked": "", "color": "#E15759" },
+    { "id": "chk-ANTONIO_NARIÑO", "label": "Antonio Nariño", "checked": "", "color": "#F18E2C" },
+    { "id": "chk-BARRIOS_UNIDOS", "label": "Barrios Unidos", "checked": "", "color": "#E15759" },
     { "id": "chk-BOSA", "label": "Bosa", "checked": "", "color": "#76B7B2" },
     { "id": "chk-CANDELARIA", "label": "Candelaria", "checked": "", "color": "#58A14E" },
     { "id": "chk-CHAPINERO", "label": "Chapinero", "checked": "", "color": "#EDC849" },
-    { "id": "chk-CIUDAD BOLIVAR", "label": "Ciudad Bolivar", "checked": "", "color": "#EDC849" },
+    { "id": "chk-CIUDAD_BOLIVAR", "label": "Ciudad Bolivar", "checked": "", "color": "#CAB2D5" },
     { "id": "chk-ENGATIVA", "label": "Engativá", "checked": "", "color": "#AF7AA1" },
     { "id": "chk-FONTIBON", "label": "Fontibón", "checked": "", "color": "#FE9DA6" },
     { "id": "chk-KENNEDY", "label": "Kennedy", "checked": "", "color": "#9C755F" },
-    { "id": "chk-LOS MARTIRES", "label": "Los Martires", "checked": "", "color": "#BAAFAB" },
-    { "id": "chk-PUENTE ARANDA", "label": "Puente Aranda", "checked": "", "color": "#1B9E77" },
-    { "id": "chk-RAFAEL URIBE URIBE", "label": "Rafael Uribe Uribe", "checked": "", "color": "#D95E01" },
-    { "id": "chk-SAN CRISTOBAL", "label": "San Cristobal", "checked": "", "color": "#7570B2" },
-    { "id": "chk-SANTA FE", "label": "Sanat Fé", "checked": "", "color": "#E6298A" },
+    { "id": "chk-LOS_MARTIRES", "label": "Los Martires", "checked": "", "color": "#BAAFAB" },
+    { "id": "chk-PUENTE_ARANDA", "label": "Puente Aranda", "checked": "", "color": "#1B9E77" },
+    { "id": "chk-RAFAEL_URIBE_URIBE", "label": "Rafael Uribe Uribe", "checked": "", "color": "#D95E01" },
+    { "id": "chk-SAN_CRISTOBAL", "label": "San Cristobal", "checked": "", "color": "#7570B2" },
+    { "id": "chk-SANTA_FE", "label": "Sanat Fé", "checked": "", "color": "#E6298A" },
     { "id": "chk-SUBA", "label": "Suba", "checked": "", "color": "#00BED1" },
     { "id": "chk-TEUSAQUILLO", "label": "Teusaquillo", "checked": "", "color": "#BCBF00" },
     { "id": "chk-TUNJUELITO", "label": "Tunjuelito", "checked": "", "color": "#7F7F7F" },
@@ -884,7 +901,7 @@ function openEDAPopup() {
   ];
 
   // set the dimensions and margins of the graph
-  const margin = {top: 30, right: 30, bottom: 30, left: 50},
+  const margin = {top: 30, right: 30, bottom: 45, left: 70},
   width = 1000 - margin.left - margin.right,
   height = 600 - margin.top - margin.bottom;
 
@@ -922,14 +939,31 @@ function openEDAPopup() {
           .attr("transform", `translate(${margin.left},${margin.top})`);
       
       svg.append("g")
+        .style("font-size", "14px")
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(x).ticks(5).tickFormat((d,i) => tickLabels[i]));
       
+      svg.append("text")          
+        .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
+        .style("text-anchor", "middle")
+        .text((lang === "en") ? "Walkability index": "Índice de caminabilidad");
+      
       svg.append("g")
+        .style("font-size", "14px")
         .call(d3.axisLeft(y));
 
+      svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text((lang === "en") ? "Density": "Densidad");
+
+      let stats = [];
+
       districts.map(d => {
-        let district = data.filter(di => di.LocNombre === d.id.replace("chk-", ""));
+        let district = data.filter(di => di.LocNombre === d.id.replace("chk-", "").replaceAll("_", " "));
         let density = kde(district.map(function(d){  return d.Walk_Base; }));
 
         svg.append("path")
@@ -945,35 +979,105 @@ function openEDAPopup() {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return y(d[1]); })
             );
+        
+        stats.push({
+          'label': d.label,
+          'mean': (d3.mean(district.map(function(d){  return d.Walk_Base; })) / 1000).toFixed(3),
+          'min': (d3.min(district.map(function(d){  return d.Walk_Base; })) / 1000).toFixed(3),
+          'max': (d3.max(district.map(function(d){  return d.Walk_Base; })) / 1000).toFixed(3)
+        });
+
       });
+
+      console.log(stats);
+
+      let table = document.getElementById('district-table');
+      table.innerHTML = '';
+
+      let trD = document.createElement('tr');
+      let labels = ['Localidad'].concat(stats.map(s => s.label));
+      for (label of labels) {
+        let th = document.createElement('th');
+        th.innerHTML = label;
+        trD.appendChild(th);
+      }
+      table.appendChild(trD);
+
+      let trMean = document.createElement('tr');
+      let means = ['Promedio'].concat(stats.map(s => s.mean));
+      for (mean of means) {
+        let th = document.createElement('td');
+        th.innerHTML = mean;
+        trMean.appendChild(th);
+      }
+      table.appendChild(trMean);
+
+      let trMin = document.createElement('tr');
+      let mins = ['Mínimo'].concat(stats.map(s => s.min));
+      for (min of mins) {
+        let th = document.createElement('td');
+        th.innerHTML = min;
+        trMin.appendChild(th);
+      }
+      table.appendChild(trMin);
+
+      let trMax = document.createElement('tr');
+      let maxs = ['Máximo'].concat(stats.map(s => s.max));
+      for (max of maxs) {
+        let th = document.createElement('td');
+        th.innerHTML = max;
+        trMax.appendChild(th);
+      }
+      table.appendChild(trMax);
+
+
     }
 
     let districtSelection = document.getElementById('district-selection');
+    districtSelection.innerHTML = '';
+
     districts.map((d, i) => {
+
+      let label = document.createElement('label');
+      label.className = 'chk-container';
+
       let input = document.createElement('input');
       input.type = 'checkbox';
       input.id = d.id;
       input.name = d.id;
       input.checked = d.checked;
-      districtSelection.appendChild(input);
+      label.appendChild(input);
 
       input.addEventListener('click', e => {
         let checked = districts.find(d => d.id === e.target.id).checked;
         if (checked === 'checked') {
           districts.find(d => d.id === e.target.id).checked = '';
+          document.querySelector('span#' + d.id).style.backgroundColor = '';
         } else {
           districts.find(d => d.id === e.target.id).checked = 'checked';
+          document.querySelector('span#' + d.id).style.backgroundColor = districts.find(d => d.id === e.target.id).color;
         }
 
         drawChart(districts.filter(d => d.checked !== ''));
       });
 
-      let label = document.createElement('label');
-      label.for = d.id;
-      label.innerHTML = d.label + '&nbsp;&nbsp;';
+      let span = document.createElement('span');
+      span.id = d.id;
+      span.className = 'checkmark';
+      span.style.borderColor = d.color;
+      if (d.checked == 'checked') {
+        span.style.backgroundColor = d.color;
+      }
+      label.appendChild(span);
+
+      let span2 = document.createElement('span');
+      span2.innerHTML = d.label + '&nbsp;&nbsp;&nbsp;&nbsp;';
+      label.appendChild(span2);
+
       districtSelection.appendChild(label);
 
       if (i == 9) {
+        districtSelection.appendChild(document.createElement('br'));
         districtSelection.appendChild(document.createElement('br'));
       }
     });
@@ -1003,6 +1107,8 @@ function openEDAPopup() {
 
 function closeEDAPopup() {
   document.getElementById('eda-popup').style.width = '0%';
+
+  window.onscroll = function() {};
 }
 
 /* Photos popup */ 

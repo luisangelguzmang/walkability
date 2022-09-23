@@ -385,7 +385,7 @@ var config = {
       description: false,
       location: {
         center: [-74.070074, 4.610067],
-        zoom: 14,
+        zoom: 13.5,
         pitch: 0,
         bearing: 0
       },
