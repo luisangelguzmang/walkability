@@ -9,7 +9,7 @@ var config = {
   use3dTerrain: true,
   title: {
     en: 'Desirable streets for pedestrians: Using a street-level index to assess walkability in Bogotá',
-    es: 'Calles deseadas por peatones: Índice a nivel de calle para evaluar la caminabilidad en Bogotá'
+    es: 'Calles deseadas: Índice para evaluar la caminabilidad en Bogotá'
   },
   subtitle: {
     en: 'What is the quality of pedestrian infrastructure in the city?',
@@ -71,18 +71,78 @@ var config = {
         }
       },
       description: {
-        en: 'Walkability is defined as the extent to which the urban environment is pedestrian-friendly. In this case, we evaluate the quality of the city’s pedestrian network to understand the factors that influence walkability including observable components (e.g., built environment) and non-observable (e.g., perceptions) factors at meso and microscale levels and according to pedestrian characteristics.',
-        es: 'Caminabilidad (walkability en inglés) se define como una medida en que el entorno urbano es amigable para los peatones. En este caso, evaluamos la calidad de la red peatonal de la ciudad para comprender los factores que influyen en la caminabilidad, incluyendo los componentes observables del entorno construido (p.e. calidad del andén, usos del suelo, tráfico, etc.) y los factores no observables (percepciones) a niveles de meso y microescala. También se tuvieron en cuenta las características socioeconómicas de los peatones.'
+        en: 'Walkability is defined as the extent to which the urban environment is pedestrian-friendly. Previous studies report spatial inequalities regarding walkability conditions within Colombian cities.<br>See more: <a href="https://doi.org/10.1016/j.retrec.2020.101024" target="_blank">https://doi.org/10.1016/j.retrec.2020.101024</a>',
+        es: 'Caminabilidad (walkability en inglés) se define como una medida en que el entorno urbano es amigable para los peatones. Estudios previos reportan desigualdades espaciales con respecto a las condiciones de caminabilidad dentro de las ciudades colombianas.<br>Ver más: <a href="https://doi.org/10.1016/j.retrec.2020.101024" target="_blank">https://doi.org/10.1016/j.retrec.2020.101024</a>'
       },
       location: {
-        center: [-74.070074, 4.610067],
-        zoom: 22,
-        pitch: 80,
-        bearing: 15
+        center: [-74.070074, 4.617067],
+        zoom: 16,
+        pitch: 60,
+        bearing: 0
       },
       mapAnimation: 'flyTo',
-      rotateAnimation: false,
-      callback: 'startPathAnimation',
+      rotateAnimation: true,
+      callback: '',
+      onChapterEnter: [],
+      onChapterExit: []
+    },
+    {
+      id: 'ch-2',
+      alignment: 'left',
+      hidden: false,
+      title: {
+        en: 'How do we assess walkability?',
+        es: '¿Cómo evaluamos la caminabilidad?'
+      },
+      image: {
+        src: './resources/animations/city.gif',
+        styles: {
+          width: '100%'
+        }
+      },
+      description: {
+        en: 'There are several walkability indices in the literature at the meso level (e.g., neighborhood) or the micro level (e.g., street). We assess walkability by combining unobservable factors (e.g., perceptions) and observable components (e.g., built environment) at both scale levels.<br />See more: <a href="https://doi.org/10.1080/01441647.2019.1703842" target="_blank">https://doi.org/10.1080/01441647.2019.1703842</a>',
+        es: 'Hay varios índices de caminabilidad en la literatura a nivel meso (p. ej., de vecindario) o nivel micro (p. ej., de calle). Nosotos evaluamos la caminabilidad combinando factores no observables (p. ej., percepciones) y componentes observables (p. ej., entorno construido) en ambos niveles de escala.<br />Ver más: <a href="https://doi.org/10.1080/01441647.2019.1703842" target="_blank">https://doi.org/10.1080/01441647.2019.1703842</a>'
+      },
+      location: {
+        center: [-74.070074, 4.617067],
+        zoom: 16,
+        pitch: 60,
+        bearing: 0
+      },
+      mapAnimation: 'flyTo',
+      rotateAnimation: true,
+      callback: '',
+      onChapterEnter: [],
+      onChapterExit: []
+    },
+    {
+      id: 'ch-3',
+      alignment: 'right',
+      hidden: false,
+      title: {
+        en: 'Can this methodology be used to assess walkability in an entire city? ',
+        es: '¿Puede esta metodología ser usada para evaluar la caminabilidad de una ciudad entera?'
+      },
+      image: {
+        src: './resources/vectors/city.png',
+        styles: {
+          width: '100%'
+        }
+      },
+      description: {
+        en: 'Yes. Bogotá is the first large-scale application. Particularly, the methodology considers pedestrians’ perceptions of five factors influencing walkability: Pedestrian infrastructure robustness, road safety, personal security, destination access, and comfort. Also, it includes observable components of the built environment associated with each factor.<br />See more: <a href="https://doi.org/10.1016/j.trd.2022.103462" target="_blank">https://doi.org/10.1016/j.trd.2022.103462</a>',
+        es: 'Sí. Bogotá es la primera aplicación a gran escala. En particular, la metodología considera las percepciones de los peatones sobre cinco factores que influyen en la caminabilidad: Solidez de la infraestructura peatonal, seguridad vial, seguridad personal, acceso al destino y comodidad. Además, se incluyen componentes observables del entorno construido asociados a cada factor.<br />See more: <a href="https://doi.org/10.1016/j.trd.2022.103462" target="_blank">https://doi.org/10.1016/j.trd.2022.103462</a>'
+      },
+      location: {
+        center: [-74.070074, 4.617067],
+        zoom: 16,
+        pitch: 60,
+        bearing: 0
+      },
+      mapAnimation: 'flyTo',
+      rotateAnimation: true,
+      callback: '',
       onChapterEnter: [
         {
           layer: '3d-buildings',
@@ -92,65 +152,25 @@ var config = {
       onChapterExit: []
     },
     {
-      id: 'ch-2',
-      alignment: 'left',
-      hidden: false,
-      title: {
-        en: 'What are the pedestrian characteristics?',
-        es: '¿Cuáles son las características de los peatones?'
-      } ,
-      image: {
-        src: './resources/vectors/characters.png',
-        styles: {
-          objectFit: 'cover',
-          height: '160px'
-        }
-      },
-      description: {
-        en: 'We did differentiated assessments according to socioeconomic levels, age ranges, and gender. We did not find differences between men and women perceptions.',
-        es: 'Hicimos evaluaciones diferenciadas según el nivel socioeconómico, rangos de edad y sexo. No encontramos diferencias entre las percepciones de hombres y mujeres.'
-      },
-      location: {
-        center: [-74.070074, 4.610067],
-        zoom: 15,
-        pitch: 0,
-        bearing: 0
-      },
-      mapAnimation: 'flyTo',
-      rotateAnimation: false,
-      callback: '',
-      onChapterEnter: [
-        {
-          layer: '3d-buildings',
-          opacity: 0
-        },
-        {
-          layer: 'walkability-lyr',
-          opacity: 0
-        }
-      ],
-      onChapterExit: []
-    },
-    {
-      id: 'ch-3',
+      id: 'ch-4',
       alignment: 'center',
       hidden: false,
       styles: {
         textAlign: 'center'
       },
-      title: false,
+      title: {
+        en: 'Do all pedestrians experience the same walkability conditions?',
+        es: '¿Todos los peatones experimentan las mismas condicines de caminabilidad?'
+      },
       image: {
-        src: './resources/animations/city.gif',
+        src: './resources/vectors/characters.png',
         styles: {
-          objectFit: 'cover',
-          height: '370px',
-          width: '100%',
-          objectPosition: '0% 60%'
+          width: '100%'
         }
       },
       description: {
-        en: 'Our proposed formulation of the walkability index (WI) includes observable components of the built environment and pedestrians’ perceptions of five factors influencing walkability: Pedestrian infrastructure robustness, Road safety, Personal security, Destination access, and Comfort. The WI is composed of these non-observable factors (perceptions) and their corresponding components (observable attributes of the built environment).',
-        es: 'Nuestra formulación propuesta del índice de caminabilidad (WI) incluye componentes observables del entorno construido y las percepciones de los peatones de cinco factores que influyen en la caminabilidad: calidad de la infraestructura peatonal, seguridad vial, seguridad personal, actividades cercanas y comodidad. El WI lo forman las percepciones de estos factores no observables y sus correspondientes componentes (atributos observados del entorno construido).' 
+        en: 'No, that is why we allowed differences among pedestrian types according to socioeconomic groups, age ranges and gender.',
+        es: 'No, por eso permitimos diferencias entre tipos de peatones según grupos socioeconómicos, rangos de edad y género.'
       },
       location: {
         center: [-74.070074, 4.610067],
@@ -163,26 +183,27 @@ var config = {
       callback: '',
       onChapterEnter: [
         {
-          layer: 'walkability-lyr',
-          opacity: 1
+          layer: '3d-buildings',
+          opacity: 0
         },
         {
-          layer: '3d-buildings',
+          layer: 'walkability-lyr',
           opacity: 0
         }
       ],
       onChapterExit: []
     },
     {
-      id: 'ch-4.1',
+      id: 'ch-5',
       alignment: 'left',
       hidden: false,
-      title: false,
+      title: {
+        en: 'Then, what were the main results for Bogotá?',
+        es: 'Entonces, ¿Cuáles son los principales resultados para Bogotá?'
+      },
       image: {
         src: './resources/vectors/average.png',
         styles: {
-          objectFit: 'cover',
-          height: '350px',
           width: '100%'
         }
       },
@@ -208,15 +229,13 @@ var config = {
       onChapterExit: []
     },
     {
-      id: 'ch-4.2',
+      id: 'ch-6',
       alignment: 'right',
       hidden: false,
       title: false,
       image: {
         src: './resources/vectors/young.png',
         styles: {
-          objectFit: 'cover',
-          height: '350px',
           width: '100%'
         }
       },
@@ -242,15 +261,13 @@ var config = {
       onChapterExit: []
     },
     {
-      id: 'ch-4.3',
+      id: 'ch-7',
       alignment: 'left',
       hidden: false,
       title: false,
       image: {
         src: './resources/vectors/elderly.png',
         styles: {
-          objectFit: 'cover',
-          height: '350px',
           width: '100%'
         }
       },
@@ -276,15 +293,13 @@ var config = {
       onChapterExit: []
     },
     {
-      id: 'ch-4.4',
+      id: 'ch-8',
       alignment: 'right',
       hidden: false,
       title: false,
       image: {
         src: './resources/vectors/low-income.png',
         styles: {
-          objectFit: 'cover',
-          height: '350px',
           width: '100%'
         }
       },
@@ -310,15 +325,13 @@ var config = {
       onChapterExit: []
     },
     {
-      id: 'ch-4.5',
+      id: 'ch-9',
       alignment: 'left',
       hidden: false,
       title: false,
       image: {
         src: './resources/vectors/high-income.png',
         styles: {
-          objectFit: 'cover',
-          height: '350px',
           width: '100%'
         }
       },
@@ -343,38 +356,8 @@ var config = {
       ],
       onChapterExit: []
     },
-    /*{
-      id: 'ch-5',
-      alignment: 'center',
-      hidden: false,
-      styles: {
-        textAlign: 'center'
-      },
-      title: false,
-      image: false,
-      description: {
-        en: '<b>How is the quality of the pedestrian network in Bogotá?</b><br /><i>Click on a legend to highlight by District</i><br /><div id="vis"></div>',
-        es: '<b>¿Cómo es la calidad de la red peatonal en Bootá?</b><br /><i>Haga clic en una leyenda para detallar una Localidad</i><br /><div style="padding: 5px;" id="vis"></div>'
-      },
-      location: {
-        center: [-74.070074, 4.610067],
-        zoom: 15,
-        pitch: 0,
-        bearing: 0
-      },
-      mapAnimation: 'flyTo',
-      rotateAnimation: false,
-      callback: 'disableMapInteractions',
-      onChapterEnter: [
-        {
-          layer: 'walkability-lyr',
-          opacity: 1
-        }
-      ],
-      onChapterExit: []
-    },*/
     {
-      id: 'ch-6',
+      id: 'ch-10',
       alignment: 'center',
       hidden: true,
       styles: {
@@ -395,10 +378,6 @@ var config = {
       onChapterEnter: [
         {
           layer: 'walkability-lyr',
-          opacity: 0
-        },
-        {
-          layer: '3d-buildings',
           opacity: 0
         }
       ],

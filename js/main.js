@@ -872,7 +872,7 @@ function openEDAPopup() {
   };
 
   document.getElementById("district-title").innerHTML =
-    (lang === "en") ? "Overall and by district walkability index distribution" : "Distribución del índice de caminabilidad general y por localidad";
+    (lang === "en") ? "Overall and by district walkability index distribution (average pedestrian)" : "Distribución del índice de caminabilidad general y por localidad (peatón promedio)";
 
   document.getElementById("kde-description").innerHTML =
   (lang === "en") ? "* This chart represents a kernel density estimation for the walkability index distribution." : "* Este gráfico representa una estimación de densidad por kernel para la distribución del índice de caminabilidad.";
@@ -997,7 +997,7 @@ function openEDAPopup() {
       table.innerHTML = '';
 
       let trD = document.createElement('tr');
-      let labels = ['Localidad'].concat(stats.map(s => s.label));
+      let labels = [(lang === 'en') ? 'District' : 'Localidad'].concat(stats.map(s => s.label));
       for (label of labels) {
         let th = document.createElement('th');
         th.innerHTML = label;
@@ -1006,7 +1006,7 @@ function openEDAPopup() {
       table.appendChild(trD);
 
       let trMean = document.createElement('tr');
-      let means = ['Promedio'].concat(stats.map(s => s.mean));
+      let means = [(lang === 'en') ? 'Mean' : 'Promedio'].concat(stats.map(s => s.mean));
       for (mean of means) {
         let th = document.createElement('td');
         th.innerHTML = mean;
@@ -1015,7 +1015,7 @@ function openEDAPopup() {
       table.appendChild(trMean);
 
       let trMin = document.createElement('tr');
-      let mins = ['Mínimo'].concat(stats.map(s => s.min));
+      let mins = [(lang === 'en') ? 'Min.' : 'Mínimo'].concat(stats.map(s => s.min));
       for (min of mins) {
         let th = document.createElement('td');
         th.innerHTML = min;
@@ -1024,7 +1024,7 @@ function openEDAPopup() {
       table.appendChild(trMin);
 
       let trMax = document.createElement('tr');
-      let maxs = ['Máximo'].concat(stats.map(s => s.max));
+      let maxs = [(lang === 'en') ? 'Max.' : 'Máximo'].concat(stats.map(s => s.max));
       for (max of maxs) {
         let th = document.createElement('td');
         th.innerHTML = max;

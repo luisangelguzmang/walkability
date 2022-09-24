@@ -360,6 +360,55 @@
           4.597194
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "folder": "AVBOYACA-CL116",
+        "photos": [
+          "20211024_073011.jpg",
+          "20211024_073202.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.081786,
+          4.700489
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "folder": "CL209",
+        "photos": [
+          "20211024_140528.jpg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.054473,
+          4.789173
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "folder": "ParqueIllimani",
+        "photos": [
+          "20180925_102713.jpeg"
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.161089,
+          4.546964
+        ]
+      }
     }
   ]
 }
