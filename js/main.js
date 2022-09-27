@@ -894,7 +894,7 @@ function openEDAPopup() {
     { "id": "chk-PUENTE_ARANDA", "label": "Puente Aranda", "checked": "", "color": "#1B9E77" },
     { "id": "chk-RAFAEL_URIBE_URIBE", "label": "Rafael Uribe Uribe", "checked": "", "color": "#D95E01" },
     { "id": "chk-SAN_CRISTOBAL", "label": "San Cristobal", "checked": "", "color": "#7570B2" },
-    { "id": "chk-SANTA_FE", "label": "Sanat Fé", "checked": "", "color": "#E6298A" },
+    { "id": "chk-SANTA_FE", "label": "Santa Fé", "checked": "", "color": "#E6298A" },
     { "id": "chk-SUBA", "label": "Suba", "checked": "", "color": "#00BED1" },
     { "id": "chk-TEUSAQUILLO", "label": "Teusaquillo", "checked": "", "color": "#BCBF00" },
     { "id": "chk-TUNJUELITO", "label": "Tunjuelito", "checked": "", "color": "#7F7F7F" },
